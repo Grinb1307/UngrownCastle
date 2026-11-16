@@ -1,13 +1,16 @@
 fileFormatVersion: 2
-guid: 00b73d7fe1de47b44ade2433a2240ac4
+guid: cf806a7172850594bbf4e3e4cb1978a7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6253913841052398305
-    second: large_rock_desert 1_0
+      213: -6755826963897151228
+    second: upgr_arrow_0
   - first:
-      213: -2350274228635064236
-    second: large_rock_desert 1_1
+      213: -2796568851967050280
+    second: upgr_arrow_1
+  - first:
+      213: 7708477177547008384
+    second: upgr_arrow_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,45 +106,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: large_rock_desert 1_0
+      name: upgr_arrow_0
       rect:
         serializedVersion: 2
-        x: 44
-        y: 193
-        width: 8
-        height: 13
+        x: 188
+        y: 0
+        width: 1856
+        height: 2038
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1e2b3d7f08d5ac650800000000000000
-      internalID: 6253913841052398305
+      spriteID: 40197e49b2b7e32a0800000000000000
+      internalID: -6755826963897151228
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: large_rock_desert 1_1
+      name: upgr_arrow_1
       rect:
         serializedVersion: 2
-        x: 93
-        y: 101
-        width: 747
-        height: 1185
+        x: 1412
+        y: 260
+        width: 581
+        height: 533
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 458a3759a06226fd0800000000000000
-      internalID: -2350274228635064236
+      spriteID: 8ddf49c22779039d0800000000000000
+      internalID: -2796568851967050280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: upgr_arrow_2
+      rect:
+        serializedVersion: 2
+        x: 1530
+        y: 101
+        width: 358
+        height: 131
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08925e6d6230afa60800000000000000
+      internalID: 7708477177547008384
       vertices: []
       indices: 
       edges: []
@@ -150,7 +175,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: f6e0784439398264fb3176d2fcdc97c8
     internalID: 0
     vertices: []
     indices: 
@@ -160,8 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      large_rock_desert 1_0: 6253913841052398305
-      large_rock_desert 1_1: -2350274228635064236
+      upgr_arrow_0: -6755826963897151228
+      upgr_arrow_1: -2796568851967050280
+      upgr_arrow_2: 7708477177547008384
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

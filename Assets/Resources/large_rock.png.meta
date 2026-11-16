@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 40febc9ebf19adb40a6b97d183eccca7
+guid: 70678ef42583a5d448dfa30e29d3aebc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3286658741869210290
-    second: big_rock_desert_0
-  - first:
-      213: -3183141596331573863
-    second: big_rock_desert_1
+      213: 2591052963978293910
+    second: large_rock_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: big_rock_desert_0
+      name: large_rock_0
       rect:
         serializedVersion: 2
-        x: 59
-        y: 197
-        width: 8
-        height: 13
+        x: 196
+        y: 198
+        width: 1367
+        height: 2235
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,30 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2baeb0756be8c9d20800000000000000
-      internalID: 3286658741869210290
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: big_rock_desert_1
-      rect:
-        serializedVersion: 2
-        x: 93
-        y: 101
-        width: 747
-        height: 1185
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 99df2e8459533d3d0800000000000000
-      internalID: -3183141596331573863
+      spriteID: 692362851f445f320800000000000000
+      internalID: 2591052963978293910
       vertices: []
       indices: 
       edges: []
@@ -160,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      big_rock_desert_0: 3286658741869210290
-      big_rock_desert_1: -3183141596331573863
+      large_rock_0: 2591052963978293910
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
