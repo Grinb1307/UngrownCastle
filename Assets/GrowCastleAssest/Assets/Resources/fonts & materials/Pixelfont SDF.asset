@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -667331979, guid: 67dfb1fdfb2b407222eda8e23ac8b724, type: 3}
+  m_Name: Pixelfont SDF
+  m_EditorClassIdentifier:
+  hashCode: -789150934
+  material: {fileID: 2100000, guid: 65408882960a1cb47b11ecf23d5220d7, type: 2}
+  materialHashCode: 921501386
+  m_Version: 1.1.0
+  m_SourceFontFileGUID: 3a2d397c0a9115446a1ae435159ad7c1
+  m_SourceFontFile: {fileID: 12800000, guid: 628a078602e34d248b93f49d3ddbfa99, type: 3}
+  m_AtlasPopulationMode: 1
+  m_FaceInfo:
+    m_FaceIndex: 0
+    m_FamilyName: Pixelfont
+    m_StyleName: Regular
+    m_PointSize: 32
+    m_Scale: 1
+    m_UnitsPerEM: 1050
+    m_LineHeight: 40.228573
+    m_AscentLine: 28.038095
+    m_CapLine: 28
+    m_MeanLine: 20
+    m_Baseline: 0
+    m_DescentLine: 0
+    m_SuperscriptOffset: 28.038095
+    m_SuperscriptSize: 0.5
+    m_SubscriptOffset: 0
+    m_SubscriptSize: 0.5
+    m_UnderlineOffset: -4.2361903
+    m_UnderlineThickness: 1.5238096
+    m_StrikethroughOffset: 8
+    m_StrikethroughThickness: 1.5238096
+    m_TabWidth: 12
+  m_GlyphTable: []
+  m_CharacterTable: []
+  m_AtlasTextures:
+  - {fileID: 2800000, guid: aa06b34baeb53ce49807ea457e3a65aa, type: 3}
+  m_AtlasTextureIndex: 0
+  m_IsMultiAtlasTexturesEnabled: 0
+  m_ClearDynamicDataOnBuild: 1
+  m_UsedGlyphRects: []
+  m_FreeGlyphRects:
+  - m_X: 0
+    m_Y: 0
+    m_Width: 2047
+    m_Height: 2047
+  m_fontInfo:
+    Name:
+    PointSize: 0
+    Scale: 0
+    CharacterCount: 0
+    LineHeight: 0
+    Baseline: 0
+    Ascender: 0
+    CapHeight: 0
+    Descender: 0
+    CenterLine: 0
+    SuperscriptOffset: 0
+    SubscriptOffset: 0
+    SubSize: 0
+    Underline: 0
+    UnderlineThickness: 0
+    strikethrough: 0
+    strikethroughThickness: 0
+    TabWidth: 0
+    Padding: 0
+    AtlasWidth: 0
+    AtlasHeight: 0
+  atlas: {fileID: 0}
+  m_AtlasWidth: 2048
+  m_AtlasHeight: 2048
+  m_AtlasPadding: 6
+  m_AtlasRenderMode: 4169
+  m_glyphInfoList: []
+  m_KerningTable:
+    kerningPairs: []
+  m_FontFeatureTable:
+    m_GlyphPairAdjustmentRecords: []
+  fallbackFontAssets: []
+  m_FallbackFontAssetTable: []
+  m_CreationSettings:
+    sourceFontFileName:
+    sourceFontFileGUID: 3a2d397c0a9115446a1ae435159ad7c1
+    pointSizeSamplingMode: 1
+    pointSize: 32
+    padding: 6
+    packingMode: 0
+    atlasWidth: 2048
+    atlasHeight: 2048
+    characterSetSelectionMode: 6
+    characterSequence: 0A,41,43,48,54,5F,25A1,3001-3002,3044,304D,304F,3055,3057,3059,3060,3066-3068,306E,308B,30A4,30B9,30C7,30C9,30D0,30D7,30EC-30ED,30FC,4E16,4E50,4ECA,4F60,5230,5929,5E38,5F00,5F97,5FC3,5FEB,620F,6765,6B22,6E38,73A9,754C,8FCE,B155,C138,C548,C694,D558
+    referencedFontAssetGUID: ee9441e59429af746b44b98218e2d220
+    referencedTextAssetGUID:
+    fontStyle: 0
+    fontStyleModifier: 0
+    renderMode: 4169
+    includeFontFeatures: 0
+  m_FontWeightTable:
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  fontWeights: []
+  normalStyle: 0
+  normalSpacingOffset: 0
+  boldStyle: 0.75
+  boldSpacing: 7
+  italicStyle: 35
+  tabSize: 10
