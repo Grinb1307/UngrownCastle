@@ -636,8 +636,8 @@ MonoBehaviour:
   arrowPrefab: {fileID: 9054285057211130106, guid: bea995e5f90838b4393cd6707fd70902, type: 3}
   bowTransform: {fileID: 5555671641123377525}
   firePoint: {fileID: 985221167}
-  arrowCount: 5
-  spreadAngle: 40
+  attackSpeedMultiplier: 2.5
+  skillDuration: 5
 --- !u!1001 &1872795946743500465
 PrefabInstance:
   m_ObjectHideFlags: 0

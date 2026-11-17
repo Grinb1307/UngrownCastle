@@ -1,31 +1,43 @@
 
 using UnityEngine;
+using System.Collections;
 
 public class Archer : BaseHeroes
 {
-    [Header("Archer Skill")]
-    [SerializeField] private int arrowCount = 5;
-    [SerializeField] private float spreadAngle = 40f;
+    [Header("Rapid Fire Skill")]
+    [SerializeField] private float attackSpeedMultiplier = 2f;
+    [SerializeField] private float skillDuration = 6f;
 
-    // Chỉ sử dụng skill khi có mục tiêu
-    protected override bool CanUseSkill()
-    {
-        return target != null;
-    }
+    private float originalAttackSpeed;
+    private Coroutine skillCoroutine;
 
     public override void UseSkill()
     {
-        float angleStep =
-            spreadAngle / (arrowCount - 1);
+        // Không cho kích hoạt chồng skill
+        if (skillCoroutine != null)
+            return;
 
-        float startAngle = -spreadAngle / 2f;
+        // Lưu tốc độ bắn ban đầu
+        originalAttackSpeed = attackSpeed;
 
-        for (int i = 0; i < arrowCount; i++)
-        {
-            float angle =
-                startAngle + angleStep * i;
+        skillCoroutine = StartCoroutine(RapidFire());
+    }
 
-            ShootArrow(angle);
-        }
+    private IEnumerator RapidFire()
+    {
+        Debug.Log("Archer activated Rapid Fire!");
+
+        // Tăng tốc độ bắn
+        attackSpeed = originalAttackSpeed *
+                      attackSpeedMultiplier;
+
+        // Duy trì skill trong 6 giây
+        yield return new WaitForSeconds(skillDuration);
+
+        // Khôi phục tốc độ bắn
+        attackSpeed = originalAttackSpeed;
+
+        skillCoroutine = null;
+
     }
 }
