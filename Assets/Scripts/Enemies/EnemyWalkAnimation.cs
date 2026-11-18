@@ -18,15 +18,21 @@ namespace UngrownCastle.Enemies
         [Header("Transforms To Animate")]
         [SerializeField] private Transform bodyTransform;
         [SerializeField] private Transform headTransform;
+        [SerializeField] private Transform leftLegTransform;
+        [SerializeField] private Transform rightLegTransform;
+        [SerializeField] private Transform leftArmTransform;
+        [SerializeField] private Transform rightArmTransform;
         [SerializeField] private Transform weaponTransform;
         [SerializeField] private Transform leftWingTransform;
         [SerializeField] private Transform rightWingTransform;
         [SerializeField] private Transform tailTransform;
 
         [Header("Walk Settings")]
-        [SerializeField] private float walkFrequency = 8f;
-        [SerializeField] private float bobHeight = 0.08f;
-        [SerializeField] private float swayAngle = 6f;
+        [SerializeField] private float walkFrequency = 9f;
+        [SerializeField] private float bobHeight = 0.05f;
+        [SerializeField] private float swayAngle = 5f;
+        [SerializeField] private float legSwingAngle = 32f;
+        [SerializeField] private float armSwingAngle = 28f;
         [SerializeField] private float weaponSwingAngle = 18f;
 
         [Header("Slime Bounce Settings")]
@@ -41,6 +47,10 @@ namespace UngrownCastle.Enemies
 
         private Vector3 initialBodyPos;
         private Vector3 initialHeadPos;
+        private Quaternion initialLeftLegRot;
+        private Quaternion initialRightLegRot;
+        private Quaternion initialLeftArmRot;
+        private Quaternion initialRightArmRot;
         private Quaternion initialWeaponRot;
         private Quaternion initialLeftWingRot;
         private Quaternion initialRightWingRot;
@@ -59,6 +69,10 @@ namespace UngrownCastle.Enemies
             initialScale = bodyTransform.localScale;
 
             if (headTransform != null) initialHeadPos = headTransform.localPosition;
+            if (leftLegTransform != null) initialLeftLegRot = leftLegTransform.localRotation;
+            if (rightLegTransform != null) initialRightLegRot = rightLegTransform.localRotation;
+            if (leftArmTransform != null) initialLeftArmRot = leftArmTransform.localRotation;
+            if (rightArmTransform != null) initialRightArmRot = rightArmTransform.localRotation;
             if (weaponTransform != null) initialWeaponRot = weaponTransform.localRotation;
             if (leftWingTransform != null) initialLeftWingRot = leftWingTransform.localRotation;
             if (rightWingTransform != null) initialRightWingRot = rightWingTransform.localRotation;
@@ -90,32 +104,56 @@ namespace UngrownCastle.Enemies
 
         private void AnimateBipedWalk()
         {
-            // Bouncing up and down as feet take steps
-            float bob = Mathf.Abs(Mathf.Sin(walkTimer * walkFrequency)) * bobHeight;
+            float walkCycle = walkTimer * walkFrequency;
+
+            // 1. Legs scissor swing
+            float legSwing = Mathf.Sin(walkCycle) * legSwingAngle;
+            if (leftLegTransform != null)
+            {
+                leftLegTransform.localRotation = initialLeftLegRot * Quaternion.Euler(0, 0, -legSwing);
+            }
+            if (rightLegTransform != null)
+            {
+                rightLegTransform.localRotation = initialRightLegRot * Quaternion.Euler(0, 0, legSwing);
+            }
+
+            // 2. Arms swing in opposition to legs
+            float armSwing = Mathf.Sin(walkCycle) * armSwingAngle;
+            if (leftArmTransform != null)
+            {
+                leftArmTransform.localRotation = initialLeftArmRot * Quaternion.Euler(0, 0, armSwing);
+            }
+            if (rightArmTransform != null)
+            {
+                rightArmTransform.localRotation = initialRightArmRot * Quaternion.Euler(0, 0, -armSwing);
+            }
+
+            // 3. Body bobs up & down twice per full stride
+            float bob = Mathf.Abs(Mathf.Sin(walkCycle)) * bobHeight;
             bodyTransform.localPosition = initialBodyPos + new Vector3(0, bob, 0);
 
-            // Torso / body swaying forward and back
-            float sway = Mathf.Sin(walkTimer * walkFrequency * 0.5f) * swayAngle;
+            // 4. Torso subtle sway
+            float sway = Mathf.Sin(walkCycle * 0.5f) * swayAngle;
             bodyTransform.localRotation = Quaternion.Euler(0, 0, sway);
 
-            // Head nodding gently
+            // 5. Head nodding gently
             if (headTransform != null)
             {
-                float headBob = Mathf.Sin(walkTimer * walkFrequency + 0.5f) * (bobHeight * 0.5f);
+                float headBob = Mathf.Sin(walkCycle + 0.5f) * (bobHeight * 0.5f);
                 headTransform.localPosition = initialHeadPos + new Vector3(0, headBob, 0);
             }
 
-            // Weapon swinging back and forth with walk cycle
-            if (weaponTransform != null && attackSwingCoroutine == null)
+            // 6. Weapon swing if separate from rightArm
+            if (weaponTransform != null && attackSwingCoroutine == null && rightArmTransform == null)
             {
-                float weaponSwing = Mathf.Sin(walkTimer * walkFrequency) * weaponSwingAngle;
+                float weaponSwing = Mathf.Sin(walkCycle) * weaponSwingAngle;
                 weaponTransform.localRotation = initialWeaponRot * Quaternion.Euler(0, 0, weaponSwing);
             }
 
-            // Tail swaying (Tauren)
+            // 7. Tail swaying (Tauren)
             if (tailTransform != null)
             {
-                float tailSwing = Mathf.Sin(walkTimer * walkFrequency * 0.7f) * 15f;
+                float tailSwing = Mathf.Sin(walkCycle * 0.7f) * 15f;
                 tailTransform.localRotation = initialTailRot * Quaternion.Euler(0, 0, tailSwing);
             }
         }
@@ -126,13 +164,10 @@ namespace UngrownCastle.Enemies
             float cycle = Mathf.Repeat(walkTimer * bounceFrequency, Mathf.PI);
             float hop = Mathf.Sin(cycle);
 
-            // Vertical position
-            bodyTransform.localPosition = initialBodyPos + new Vector3(0, hop * bobHeight * 2f, 0);
+            bodyTransform.localPosition = initialBodyPos + new Vector3(0, hop * bobHeight * 2.5f, 0);
 
-            // Scale squash and stretch
             if (hop > 0.4f)
             {
-                // In air: stretched tall and thin
                 float factor = (hop - 0.4f) / 0.6f;
                 float sx = Mathf.Lerp(1f, 1f / stretchY, factor);
                 float sy = Mathf.Lerp(1f, stretchY, factor);
@@ -140,7 +175,6 @@ namespace UngrownCastle.Enemies
             }
             else
             {
-                // On ground: squashed wide and flat
                 float factor = 1f - (hop / 0.4f);
                 float sx = Mathf.Lerp(1f, squashX, factor);
                 float sy = Mathf.Lerp(1f, 1f / squashX, factor);
@@ -150,11 +184,9 @@ namespace UngrownCastle.Enemies
 
         private void AnimateFlyingFlap()
         {
-            // Hovering sine wave
             float hover = Mathf.Sin(walkTimer * 3f) * flyBobHeight;
             bodyTransform.localPosition = initialBodyPos + new Vector3(0, hover, 0);
 
-            // Flapping wings
             float flap = Mathf.Sin(walkTimer * flapFrequency);
 
             if (leftWingTransform != null)
@@ -173,10 +205,13 @@ namespace UngrownCastle.Enemies
             isAttacking = attacking;
             if (!attacking)
             {
-                // Reset positions when moving again
                 bodyTransform.localPosition = initialBodyPos;
                 bodyTransform.localRotation = Quaternion.identity;
                 bodyTransform.localScale = initialScale;
+                if (leftLegTransform != null) leftLegTransform.localRotation = initialLeftLegRot;
+                if (rightLegTransform != null) rightLegTransform.localRotation = initialRightLegRot;
+                if (leftArmTransform != null) leftArmTransform.localRotation = initialLeftArmRot;
+                if (rightArmTransform != null) rightArmTransform.localRotation = initialRightArmRot;
             }
         }
 
@@ -191,32 +226,36 @@ namespace UngrownCastle.Enemies
 
         private IEnumerator AttackSwingRoutine()
         {
-            float duration = 0.25f;
+            float duration = 0.28f;
             float elapsed = 0f;
 
-            // Wind up (lean back)
+            Transform attackArm = rightArmTransform != null ? rightArmTransform : weaponTransform;
+
+            // Wind up
             while (elapsed < duration * 0.4f)
             {
                 elapsed += Time.deltaTime;
                 float t = elapsed / (duration * 0.4f);
                 bodyTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(0, -12f, t));
-                if (weaponTransform != null)
+                if (attackArm != null)
                 {
-                    weaponTransform.localRotation = initialWeaponRot * Quaternion.Euler(0, 0, Mathf.Lerp(0, -35f, t));
+                    Quaternion baseRot = rightArmTransform != null ? initialRightArmRot : initialWeaponRot;
+                    attackArm.localRotation = baseRot * Quaternion.Euler(0, 0, Mathf.Lerp(0, -45f, t));
                 }
                 yield return null;
             }
 
-            // Swing forward (lunge towards castle)
+            // Lunge & Swing forward
             elapsed = 0f;
             while (elapsed < duration * 0.6f)
             {
                 elapsed += Time.deltaTime;
                 float t = elapsed / (duration * 0.6f);
-                bodyTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(-12f, 20f, t));
-                if (weaponTransform != null)
+                bodyTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(-12f, 25f, t));
+                if (attackArm != null)
                 {
-                    weaponTransform.localRotation = initialWeaponRot * Quaternion.Euler(0, 0, Mathf.Lerp(-35f, 50f, t));
+                    Quaternion baseRot = rightArmTransform != null ? initialRightArmRot : initialWeaponRot;
+                    attackArm.localRotation = baseRot * Quaternion.Euler(0, 0, Mathf.Lerp(-45f, 55f, t));
                 }
                 yield return null;
             }
@@ -227,10 +266,11 @@ namespace UngrownCastle.Enemies
             {
                 elapsed += Time.deltaTime;
                 float t = elapsed / 0.15f;
-                bodyTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(20f, 0, t));
-                if (weaponTransform != null)
+                bodyTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(25f, 0, t));
+                if (attackArm != null)
                 {
-                    weaponTransform.localRotation = Quaternion.Lerp(weaponTransform.localRotation, initialWeaponRot, t);
+                    Quaternion baseRot = rightArmTransform != null ? initialRightArmRot : initialWeaponRot;
+                    attackArm.localRotation = Quaternion.Lerp(attackArm.localRotation, baseRot, t);
                 }
                 yield return null;
             }
@@ -246,9 +286,48 @@ namespace UngrownCastle.Enemies
                 StopCoroutine(attackSwingCoroutine);
             }
 
-            // Tumble back on death
-            bodyTransform.localRotation = Quaternion.Euler(0, 0, -75f);
+            bodyTransform.localRotation = Quaternion.Euler(0, 0, -80f);
             bodyTransform.localPosition = initialBodyPos + new Vector3(0, -0.1f, 0);
+            if (leftLegTransform != null) leftLegTransform.localRotation = initialLeftLegRot * Quaternion.Euler(0, 0, -35f);
+            if (rightLegTransform != null) rightLegTransform.localRotation = initialRightLegRot * Quaternion.Euler(0, 0, 20f);
+            if (leftArmTransform != null) leftArmTransform.localRotation = initialLeftArmRot * Quaternion.Euler(0, 0, -45f);
+            if (rightArmTransform != null) rightArmTransform.localRotation = initialRightArmRot * Quaternion.Euler(0, 0, -30f);
+        }
+
+        public void SetupBiped(
+            Transform body,
+            Transform head,
+            Transform leftLeg = null,
+            Transform rightLeg = null,
+            Transform leftArm = null,
+            Transform rightArm = null,
+            Transform weapon = null,
+            Transform tail = null)
+        {
+            style = AnimationStyle.BipedWalk;
+            bodyTransform = body;
+            headTransform = head;
+            leftLegTransform = leftLeg;
+            rightLegTransform = rightLeg;
+            leftArmTransform = leftArm;
+            rightArmTransform = rightArm;
+            weaponTransform = weapon;
+            tailTransform = tail;
+        }
+
+        public void SetupSlime(Transform body)
+        {
+            style = AnimationStyle.SlimeBounce;
+            bodyTransform = body;
+        }
+
+        public void SetupFlying(Transform body, Transform head, Transform leftWing, Transform rightWing)
+        {
+            style = AnimationStyle.FlyingFlap;
+            bodyTransform = body;
+            headTransform = head;
+            leftWingTransform = leftWing;
+            rightWingTransform = rightWing;
         }
     }
 }
