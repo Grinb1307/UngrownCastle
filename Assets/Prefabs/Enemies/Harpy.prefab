@@ -128,7 +128,7 @@ MonoBehaviour:
   goldReward: 3
   expReward: 3
   isFlying: 1
-  castleStopX: 1
+  castleStopX: -3.77
   targetCastle: {fileID: 0}
   walkAnimation: {fileID: 0}
   renderersToFlash: []

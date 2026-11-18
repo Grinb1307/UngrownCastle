@@ -64,7 +64,10 @@ namespace UngrownCastle.Enemies
 
         private void Awake()
         {
+            // bodyTransform defaults to this transform if not assigned
             if (bodyTransform == null) bodyTransform = transform;
+
+            // Cache initial states safely
             initialBodyPos = bodyTransform.localPosition;
             initialScale = bodyTransform.localScale;
 

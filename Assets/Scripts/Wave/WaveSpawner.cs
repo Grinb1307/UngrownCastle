@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UngrownCastle.Enemies;
 
 namespace UngrownCastle.Wave
 {
@@ -56,6 +57,12 @@ namespace UngrownCastle.Wave
             if (waves == null || waves.Count == 0)
             {
                 SetupDefaultWaves();
+            }
+
+            // Auto-start wave 1 if enabled
+            if (autoStartNextWave && waves.Count > 0)
+            {
+                StartNextWave();
             }
         }
 
@@ -162,21 +169,33 @@ namespace UngrownCastle.Wave
 
         private void SpawnEnemy(GameObject prefab)
         {
-            Vector3 pos;
-            if (spawnPoint != null)
+            // Base X from spawnPoint (or defaultSpawnX fallback)
+            float baseX = spawnPoint != null ? spawnPoint.position.x : defaultSpawnX;
+
+            // Check if flying enemy
+            bool isFlying = false;
+            Enemy enemyComp = prefab.GetComponent<Enemy>();
+            if (enemyComp != null)
             {
-                pos = spawnPoint.position;
-            }
-            else
-            {
-                pos = new Vector3(defaultSpawnX, groundY, 0);
+                isFlying = enemyComp.IsFlying;
             }
 
-            // Slight Y offset variation so enemies don't overlap in a single line
-            pos.y += UnityEngine.Random.Range(-0.08f, 0.08f);
+            // Y: flying enemies go higher, ground enemies use groundY
+            float spawnY = isFlying ? flyingY : groundY;
+
+            // Slight X variation so enemies don't all stack at same X
+            float offsetX = UnityEngine.Random.Range(-0.15f, 0.15f);
+
+            Vector3 pos = new Vector3(baseX + offsetX, spawnY, 0f);
 
             GameObject enemy = Instantiate(prefab, pos, Quaternion.identity);
+
+            // Flip to face LEFT (toward castle)
+            Vector3 scale = enemy.transform.localScale;
+            enemy.transform.localScale = new Vector3(-Mathf.Abs(scale.x), scale.y, scale.z);
+
             activeEnemies.Add(enemy);
+            Debug.Log($"[WaveSpawner] Spawned {prefab.name} at {pos}");
         }
     }
 }

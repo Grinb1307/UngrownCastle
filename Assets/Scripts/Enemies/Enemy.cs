@@ -25,8 +25,8 @@ namespace UngrownCastle.Enemies
         [SerializeField] private bool isFlying = false;
 
         [Header("Target & Movement")]
-        [SerializeField] private float castleStopX = 1.0f; // Position where castle stands
-        [SerializeField] private Transform targetCastle;
+        [SerializeField] public float castleStopX = -3.77f; // Position where castle stands
+        [SerializeField] public Transform targetCastle;
 
         [Header("Components")]
         [SerializeField] private EnemyWalkAnimation walkAnimation;
@@ -45,19 +45,27 @@ namespace UngrownCastle.Enemies
         public float MoveSpeed => moveSpeed;
         public EnemyState State => state;
         public bool IsDead => state == EnemyState.Dead;
+        public bool IsFlying => isFlying;
 
         private void Awake()
         {
             currentHp = maxHp;
             enemyCollider = GetComponent<Collider2D>();
+
+            // Auto-find EnemyWalkAnimation anywhere on this prefab
+            if (walkAnimation == null)
+            {
+                walkAnimation = GetComponentInChildren<EnemyWalkAnimation>(true);
+            }
             if (walkAnimation == null)
             {
                 walkAnimation = GetComponent<EnemyWalkAnimation>();
             }
 
+            // Auto-collect all SpriteRenderers in children for flash effect
             if (renderersToFlash == null || renderersToFlash.Length == 0)
             {
-                renderersToFlash = GetComponentsInChildren<SpriteRenderer>();
+                renderersToFlash = GetComponentsInChildren<SpriteRenderer>(true);
             }
         }
 
@@ -71,7 +79,12 @@ namespace UngrownCastle.Enemies
                 {
                     targetCastle = castleObj.transform;
                 }
+                else
+                {
+                    Debug.LogWarning($"[{enemyName}] No GameObject with tag 'Castle' found. Using castleStopX={castleStopX} as target.");
+                }
             }
+            // NOTE: Facing direction is handled by WaveSpawner on Instantiate
         }
 
         private void Update()
