@@ -484,7 +484,7 @@ MonoBehaviour:
   critMultiplier: 2
   maxMana: 100
   currentMana: 0
-  manaRegen: 5
+  manaRegen: 10
   attackRange: 8
   enemyLayer:
     serializedVersion: 2

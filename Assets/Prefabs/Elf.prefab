@@ -275,14 +275,14 @@ MonoBehaviour:
   critMultiplier: 2
   maxMana: 100
   currentMana: 0
-  manaRegen: 5
+  manaRegen: 10
   attackRange: 8
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  arrowPrefab: {fileID: 0}
-  bowTransform: {fileID: 0}
-  firePoint: {fileID: 0}
+  arrowPrefab: {fileID: 9054285057211130106, guid: bea995e5f90838b4393cd6707fd70902, type: 3}
+  bowTransform: {fileID: 6531426498645130891}
+  firePoint: {fileID: 8913925239280636698}
   attackSpeedMultiplier: 2
   attackDamageMultiplier: 5
   skillDuration: 5

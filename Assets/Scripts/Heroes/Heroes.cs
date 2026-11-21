@@ -12,7 +12,7 @@ public abstract class Heroes : MonoBehaviour
     [Header("Mana")]
     [SerializeField] protected float maxMana = 100f;
     [SerializeField] protected float currentMana = 0f;
-    [SerializeField] protected float manaRegen = 5f;
+    [SerializeField] protected float manaRegen = 10f;
 
     [Header("Target")]
     [SerializeField] protected float attackRange = 8f;
