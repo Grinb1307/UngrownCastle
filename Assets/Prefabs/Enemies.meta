@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Enemies.meta
 guid: 6b684d9de8523f649a2c8186652105a7
+========
+guid: 2764311e6c01755498681a53ade641fe
+>>>>>>>> main:Assets/Prefabs/Projectfiles.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
