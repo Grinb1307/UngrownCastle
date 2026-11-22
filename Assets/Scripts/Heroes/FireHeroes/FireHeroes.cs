@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class FireHeroes : Heroes
 {
     [Header("Fire Settings")]
-    [SerializeField] protected GameObject fireballPrefab;
+    [SerializeField] protected GameObject ProjectilePrefab;
     [SerializeField] protected Transform firePoint;
 
     [SerializeField] protected float projectileSpeed = 10f;
@@ -36,9 +36,9 @@ public abstract class FireHeroes : Heroes
         if (target == null)
             return;
 
-        if (fireballPrefab == null)
+        if (ProjectilePrefab == null)
         {
-            Debug.LogError("Fireball Prefab chưa được gán!");
+            Debug.LogError("Projectile Prefab chưa được gán!");
             return;
         }
 
@@ -49,7 +49,7 @@ public abstract class FireHeroes : Heroes
         }
 
         GameObject projectile = Instantiate(
-            fireballPrefab,
+            ProjectilePrefab,
             firePoint.position,
             firePoint.rotation
         );
