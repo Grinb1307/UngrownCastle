@@ -12,7 +12,9 @@ public class Goblin : FireHeroes
 
     private void ThrowTNT()
     {
-        if (target == null || tntPrefab == null || firePoint == null)
+        if (target == null ||
+            tntPrefab == null ||
+            firePoint == null)
             return;
 
         GameObject tnt = Instantiate(
@@ -26,12 +28,12 @@ public class Goblin : FireHeroes
 
         if (projectile != null)
         {
-            projectile.Launch(target.position);
+            projectile.Launch(target);
         }
     }
 
     public override void UseSkill()
     {
-        // Skill riêng của Goblin sẽ triển khai sau
+        // Skill riêng của Goblin
     }
 }

@@ -106,15 +106,16 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  fireballPrefab: {fileID: 8190684395728828516, guid: 1f0cc9cc5050238498a3a23e9d40c9a9, type: 3}
+  ProjectilePrefab: {fileID: 0}
   firePoint: {fileID: 757170510972528282}
   projectileSpeed: 10
   firePointOffset: 0.5
   meteorPrefab: {fileID: 8190684395728828516, guid: 1f0cc9cc5050238498a3a23e9d40c9a9, type: 3}
   meteorCount: 8
-  meteorRadius: 3
-  meteorDamageMultiplier: 3
+  meteorSpacing: 1.5
   meteorSpawnHeight: 8
+  meteorDelay: 0.3
+  meteorDamageMultiplier: 3
 --- !u!1 &6065215741133441091
 GameObject:
   m_ObjectHideFlags: 0
