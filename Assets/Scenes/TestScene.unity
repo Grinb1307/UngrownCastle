@@ -421,12 +421,17 @@ Transform:
   m_GameObject: {fileID: 1814477279}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.81, y: -0.68, z: -0.019662865}
+  m_LocalPosition: {x: -5.17, y: -1.08, z: -0.019662865}
   m_LocalScale: {x: 0.3351661, y: 0.34505937, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1819104281 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2077245455969592329, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
+  m_PrefabInstance: {fileID: 2121252666}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2121252666
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -435,6 +440,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2077245455969592329, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 2077245455969592329, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.65
+      objectReference: {fileID: 0}
     - target: {fileID: 2137103671331659283, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
       propertyPath: m_Name
       value: Assasin
@@ -479,8 +492,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6857040202403936104, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
+      propertyPath: maxScale.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6857040202403936104, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 1819104281}
+    - target: {fileID: 6857040202403936104, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
+      propertyPath: lightningPrefab
+      value: 
+      objectReference: {fileID: 719831920958199751, guid: 61f6f057e7dd8e34494710a3b02f3fa9, type: 3}
+    - target: {fileID: 6857040202403936104, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
+      propertyPath: rotationOffsetZ
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9168048307226654890, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15b22b600b8675b4088f447d8fbc51a7, type: 3}
