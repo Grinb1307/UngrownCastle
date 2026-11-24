@@ -111,7 +111,7 @@ public class TNTProjectile : MonoBehaviour
             Instantiate(
                 explosionPrefab,
                 explosionPosition,
-                Quaternion.identity
+                explosionPrefab.transform.rotation
             );
         }
         else

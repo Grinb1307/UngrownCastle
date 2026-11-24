@@ -63,14 +63,23 @@ public abstract class Heroes : MonoBehaviour
     // Click chuột vào Hero để sử dụng skill
     private void OnMouseDown()
     {
+        Debug.Log($"{gameObject.name}: Click detected!");
+
         if (!IsManaFull())
+        {
+            Debug.Log("Mana chưa đầy!");
             return;
+        }
 
         if (!CanUseSkill())
+        {
+            Debug.Log("Không đủ điều kiện sử dụng skill!");
             return;
+        }
 
-        // Tiêu hao toàn bộ mana
         currentMana = 0f;
+
+        Debug.Log("Skill activated!");
 
         UseSkill();
     }
