@@ -62,14 +62,18 @@ public class LightningMage : MonoBehaviour
         }
         Stick.localRotation = endSlashRot;
 
-        // Tạo quả cầu LightningBall tại vị trí cuối cùng của dao
-        Vector3 lightningBallPosition = Stick.position;
-        Quaternion lightningBallRotation = Quaternion.Euler(0f, 0f, 0f);
-        GameObject lightningBall = Instantiate(LightningBall, lightningBallPosition, lightningBallRotation);
-        LightningBallScript ballScript = lightningBall.GetComponent<LightningBallScript>();
-        if (ballScript != null)
+        // Kiểm tra xem LightningBall có được enable hay không
+        if (LightningBall != null && LightningBall.activeInHierarchy)
         {
-            ballScript.Initialize(lightningBallPosition, 135f, 5f);
+            // Tạo quả cầu LightningBall tại vị trí cuối cùng của dao
+            Vector3 lightningBallPosition = Stick.position;
+            Quaternion lightningBallRotation = Quaternion.Euler(0f, 0f, 0f);
+            GameObject lightningBall = Instantiate(LightningBall, lightningBallPosition, lightningBallRotation);
+            LightningBallScript ballScript = lightningBall.GetComponent<LightningBallScript>();
+            if (ballScript != null)
+            {
+                ballScript.Initialize(lightningBallPosition, 135f, 5f);
+            }
         }
 
         // Chờ một nhịp ngắn ở cuối đòn chém
