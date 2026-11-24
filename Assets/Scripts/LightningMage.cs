@@ -63,8 +63,13 @@ public class LightningMage : MonoBehaviour
         Stick.localRotation = endSlashRot;
 
         // Kiểm tra xem LightningBall có được enable hay không
-        if (LightningBall != null && LightningBall.activeInHierarchy)
+        if (LightningBall != null)
         {
+            if (!LightningBall.activeInHierarchy)
+            {
+                LightningBall.SetActive(true);
+            }
+
             // Tạo quả cầu LightningBall tại vị trí cuối cùng của dao
             Vector3 lightningBallPosition = Stick.position;
             Quaternion lightningBallRotation = Quaternion.Euler(0f, 0f, 0f);
