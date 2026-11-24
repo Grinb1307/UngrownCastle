@@ -69,7 +69,7 @@ public class LightningMage : MonoBehaviour
         LightningBallScript ballScript = lightningBall.GetComponent<LightningBallScript>();
         if (ballScript != null)
         {
-            ballScript.Initialize(lightningBallPosition, 45f, 5f);
+            ballScript.Initialize(lightningBallPosition, 135f, 5f);
         }
 
         // Chờ một nhịp ngắn ở cuối đòn chém
