@@ -35,7 +35,6 @@ namespace UngrownCastle.Editor
 
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-                Debug.Log("[EnemyPrefabGenerator] All 8 complete enemy prefabs generated with full limbs and walk animations!");
             }
             finally
             {
@@ -364,7 +363,6 @@ namespace UngrownCastle.Editor
             string path = $"{PrefabOutputDir}/{name}.prefab";
             PrefabUtility.SaveAsPrefabAsset(root, path);
             Object.DestroyImmediate(root);
-            Debug.Log($"Created Complete Prefab: {path}");
         }
     }
 }

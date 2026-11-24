@@ -3,22 +3,36 @@ using UnityEngine;
 public class LightningBallScript : MonoBehaviour
 {
     public float speed = 5f;
-    public float angle = 45f;
+    public float angle = 135f;
     public float lifetime = 5f;
+    public float start = 0f;
 
+    public Transform SpawnPoint;
+    public Vector2 diagonalDirection = new Vector2(1f, -1f);
     private Vector2 direction;
 
-    public void Initialize(Vector2 startPosition, float angle, float lifetime)
+    void Start()
     {
-        transform.position = startPosition;
-        this.angle = angle;
-        this.lifetime = lifetime;
-        direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-        Destroy(gameObject, lifetime);
+        transform.position = SpawnPoint.position;
     }
-
     private void Update()
     {
-        transform.Translate(direction * speed * Time.deltaTime);
+        Attack();
     }
+
+    void Attack()
+    {
+        start += Time.deltaTime;
+        if(start > lifetime)
+        {
+            gameObject.SetActive(false);
+            start = 0f;
+        }
+        Vector3 moveDir = new Vector2(diagonalDirection.x, diagonalDirection.y).normalized;
+
+        // Di chuyển object
+        gameObject.transform.position += moveDir * speed * Time.deltaTime;
+    }
+
+
 }
