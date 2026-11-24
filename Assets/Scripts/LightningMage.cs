@@ -62,7 +62,15 @@ public class LightningMage : MonoBehaviour
         }
         Stick.localRotation = endSlashRot;
 
-        Instantiate(LightningBall);
+        // Tạo quả cầu LightningBall tại vị trí cuối cùng của dao
+        Vector3 lightningBallPosition = Stick.position;
+        Quaternion lightningBallRotation = Quaternion.Euler(0f, 0f, 0f);
+        GameObject lightningBall = Instantiate(LightningBall, lightningBallPosition, lightningBallRotation);
+        LightningBallScript ballScript = lightningBall.GetComponent<LightningBallScript>();
+        if (ballScript != null)
+        {
+            ballScript.Initialize(lightningBallPosition, 45f, 5f);
+        }
 
         // Chờ một nhịp ngắn ở cuối đòn chém
         yield return new WaitForSeconds(recoverDelay);
@@ -71,6 +79,5 @@ public class LightningMage : MonoBehaviour
         Stick.localPosition = idleLocalPos;
         Stick.localRotation = Quaternion.Euler(idleEulerAngles);
         isAttacking = false;
-
     }
 }
