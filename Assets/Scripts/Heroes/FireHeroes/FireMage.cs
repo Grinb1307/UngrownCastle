@@ -19,7 +19,7 @@ public class FireMage : FireHeroes
     protected override void PerformAttack()
     {
         // Đánh thường: Bắn cầu lửa
-        ShootFireball();
+        Attack();
     }
 
     protected override bool CanUseSkill()

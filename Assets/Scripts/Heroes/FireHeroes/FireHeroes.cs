@@ -31,7 +31,7 @@ public abstract class FireHeroes : Heroes
         );
     }
 
-    protected void ShootFireball()
+    protected void Attack()
     {
         if (target == null)
             return;

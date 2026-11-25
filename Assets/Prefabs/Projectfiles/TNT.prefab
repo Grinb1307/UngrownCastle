@@ -104,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flightTime: 0.8
   spinSpeed: 360
-  explosionPrefab: {fileID: 6893404843703034928, guid: 3f979f2a1fd225f4eb590d915365d56b, type: 3}
+  explosionPrefab: {fileID: 4950418407753162499, guid: c31e4eb8a70399442a803d61351b2b06, type: 3}
   damage: 30
   explosionRadius: 2
 --- !u!50 &7738106496565531710
