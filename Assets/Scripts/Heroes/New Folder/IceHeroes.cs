@@ -27,11 +27,10 @@ public abstract class IceHeroes : Heroes
 
     protected virtual void ShootIceProjectile()
     {
-        if (target == null || iceProjectilePrefab == null || firePoint == null)
+        if (target == null ||
+            iceProjectilePrefab == null ||
+            firePoint == null)
             return;
-
-        Vector2 direction =
-            ((Vector2)target.position - (Vector2)firePoint.position).normalized;
 
         GameObject projectile = Instantiate(
             iceProjectilePrefab,
@@ -39,11 +38,16 @@ public abstract class IceHeroes : Heroes
             Quaternion.identity
         );
 
-        IceProjectile ice = projectile.GetComponent<IceProjectile>();
+        IceProjectile ice =
+            projectile.GetComponent<IceProjectile>();
 
         if (ice != null)
         {
-            ice.Initialize(target, CalculateDamage(), projectileSpeed);
+            ice.Initialize(
+                target,
+                CalculateDamage(),
+                projectileSpeed
+            );
         }
         else
         {

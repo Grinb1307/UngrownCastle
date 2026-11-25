@@ -11,7 +11,7 @@ namespace UngrownCastle.Enemies
     }
 
     [SelectionBase]
-    public class Enemy : MonoBehaviour, IsSlowable
+    public class Enemy : MonoBehaviour
     {
         [Header("Enemy Info")]
         [SerializeField] private string enemyName = "Monster";
@@ -57,6 +57,8 @@ namespace UngrownCastle.Enemies
         public EnemyState State => state;
         public bool IsDead => state == EnemyState.Dead;
         public bool IsFlying => isFlying;
+        [Header("Training Dummy")]
+        [SerializeField] private bool isTrainingDummy = false;
 
         private void Awake()
         {
@@ -82,6 +84,8 @@ namespace UngrownCastle.Enemies
 
         private void Start()
         {
+            if (isTrainingDummy)
+                return;
             // If target castle is not explicitly assigned, find by tag or default to X = 0
             if (targetCastle == null)
             {
@@ -100,7 +104,8 @@ namespace UngrownCastle.Enemies
 
         private void Update()
         {
-            if (state == EnemyState.Dead) return;
+            if (state == EnemyState.Dead || isTrainingDummy)
+                return;
 
             float targetX = targetCastle != null ? targetCastle.position.x : castleStopX;
             float distanceToCastle = transform.position.x - targetX;
@@ -193,23 +198,15 @@ namespace UngrownCastle.Enemies
 
         private IEnumerator FlashRoutine()
         {
-            if (renderersToFlash != null)
-            {
-                foreach (var sr in renderersToFlash)
-                {
-                    if (sr != null) sr.color = Color.red;
-                }
-            }
+            isFlashing = true;
+            UpdateEnemyColor();
 
             yield return new WaitForSeconds(0.1f);
 
-            if (renderersToFlash != null)
-            {
-                foreach (var sr in renderersToFlash)
-                {
-                    if (sr != null) sr.color = Color.white;
-                }
-            }
+            isFlashing = false;
+            flashCoroutine = null;
+
+            UpdateEnemyColor();
         }
 
         private IEnumerator FadeAndDestroyRoutine()
@@ -252,6 +249,82 @@ namespace UngrownCastle.Enemies
             goldReward = gold;
             expReward = exp;
             isFlying = flying;
+        }
+        // Áp dụng hiệu ứng làm chậm
+        public void ApplySlow(float multiplier, float duration)
+        {
+            if (state == EnemyState.Dead)
+                return;
+
+            if (slowCoroutine != null)
+                StopCoroutine(slowCoroutine);
+
+            slowCoroutine = StartCoroutine(
+                SlowRoutine(multiplier, duration)
+            );
+
+            // Đồng thời chuyển màu Enemy thành xanh băng
+            ApplyFreezeColor(duration);
+        }
+
+        // Coroutine làm chậm
+        private IEnumerator SlowRoutine(float multiplier, float duration)
+        {
+            slowMultiplier = Mathf.Clamp(multiplier, 0f, 1f);
+
+            yield return new WaitForSeconds(duration);
+
+            slowMultiplier = 1f;
+            slowCoroutine = null;
+        }
+        // Áp dụng hiệu ứng đóng băng
+        private void ApplyFreezeColor(float duration)
+        {
+            if (freezeCoroutine != null)
+                StopCoroutine(freezeCoroutine);
+
+            freezeCoroutine = StartCoroutine(
+                FreezeColorRoutine(duration)
+            );
+        }
+
+        // Coroutine đổi màu xanh
+        private IEnumerator FreezeColorRoutine(float duration)
+        {
+            isFrozen = true;
+            UpdateEnemyColor();
+
+            yield return new WaitForSeconds(duration);
+
+            isFrozen = false;
+            freezeCoroutine = null;
+
+            UpdateEnemyColor();
+        }
+
+        // Cập nhật màu Enemy
+        private void UpdateEnemyColor()
+        {
+            if (renderersToFlash == null)
+                return;
+
+            Color currentColor;
+
+            if (isFlashing)
+                currentColor = Color.red;
+            else if (isFrozen)
+                currentColor = frozenColor;
+            else
+                currentColor = Color.white;
+
+            foreach (SpriteRenderer sr in renderersToFlash)
+            {
+                if (sr != null)
+                {
+                    currentColor.a = sr.color.a;
+                    sr.color = currentColor;
+                }
+            }
         }
     }
 }

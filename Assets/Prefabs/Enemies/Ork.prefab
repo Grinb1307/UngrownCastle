@@ -142,6 +142,7 @@ MonoBehaviour:
   targetCastle: {fileID: 0}
   walkAnimation: {fileID: 0}
   renderersToFlash: []
+  isTrainingDummy: 0
 --- !u!1 &1176969946915167200
 GameObject:
   m_ObjectHideFlags: 0
