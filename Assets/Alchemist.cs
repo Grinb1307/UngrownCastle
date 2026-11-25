@@ -25,6 +25,7 @@ public class Alchemist : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 60;
         if (firstExplosion == null) firstExplosion = transform.Find("FirstExplosion");
         if (secondExplosion == null) secondExplosion = transform.Find("SecondExplosion");
 

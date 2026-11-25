@@ -22,6 +22,7 @@ public class SuccubusUltimate : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 60;
         if (ultimateTransform == null) ultimateTransform = transform.Find("Ultimate");
         if (heartTransform == null) heartTransform = transform.Find("Heart");
         if (bodyTransform == null) bodyTransform = transform.Find("body");

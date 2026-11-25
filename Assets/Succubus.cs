@@ -22,6 +22,7 @@ public class Succubus : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 60;
         if (clawTransform == null) clawTransform = transform.Find("skill");
         if (bodyTransform == null) bodyTransform = transform.Find("body");
 
