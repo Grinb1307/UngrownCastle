@@ -425,6 +425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7549305325851083341}
   - component: {fileID: 5389128267686653282}
+  - component: {fileID: 7088663247505353335}
   m_Layer: 0
   m_Name: Bazooka Man
   m_TagString: Untagged
@@ -479,9 +480,58 @@ MonoBehaviour:
   firePointOffset: 0.5
   bazookaPrefab: {fileID: 6080891908967967067, guid: 07dc0129e055560418bce1249f4f2d70, type: 3}
   projectileFlightTime: 0.8
-  attackSpeedMultiplier: 2
-  attackDamageMultiplier: 5
-  skillDuration: 5
+  skillShotCount: 10
+  skillFireInterval: 0.1
+  skillDamageMultiplier: 2
+  skillExplosionMultiplier: 2
+  bazookaPivot: {fileID: 4049472703013252943}
+  rotationOffset: -90
+--- !u!61 &7088663247505353335
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7273543357117213989}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -2.3943071, y: -1.4727865}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.0822792, y: 1.7734187}
+  m_EdgeRadius: 0
 --- !u!1 &7565316548875529782
 GameObject:
   m_ObjectHideFlags: 0

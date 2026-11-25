@@ -11,7 +11,7 @@ namespace UngrownCastle.Enemies
     }
 
     [SelectionBase]
-    public class Enemy : MonoBehaviour
+    public class Enemy : MonoBehaviour, IsSlowable
     {
         [Header("Enemy Info")]
         [SerializeField] private string enemyName = "Monster";
@@ -31,6 +31,17 @@ namespace UngrownCastle.Enemies
         [Header("Components")]
         [SerializeField] private EnemyWalkAnimation walkAnimation;
         [SerializeField] private SpriteRenderer[] renderersToFlash;
+        [Header("Ice Effects")]
+        private float slowMultiplier = 1f;
+        private Coroutine slowCoroutine;
+        private Coroutine freezeCoroutine;
+
+        private bool isFrozen;
+        private bool isFlashing;
+
+        private readonly Color frozenColor = new Color(
+            0.4f, 0.8f, 1f, 1f
+        );
 
         // Current runtime stats
         private float currentHp;
@@ -124,7 +135,10 @@ namespace UngrownCastle.Enemies
                     }
                 }
 
-                transform.position += Vector3.left * (moveSpeed * Time.deltaTime);
+                float currentSpeed = moveSpeed * slowMultiplier;
+
+                transform.position += Vector3.left *
+                    (currentSpeed * Time.deltaTime);
             }
         }
 

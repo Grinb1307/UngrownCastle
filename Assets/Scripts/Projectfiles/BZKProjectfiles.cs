@@ -13,6 +13,9 @@ public class BazookaProjectile : MonoBehaviour
 
     [Header("Lifetime")]
     [SerializeField] private float lifeTime = 5f;
+    [SerializeField] private float explosionRadius = 2f;
+
+    private float currentExplosionRadius;
 
     private Rigidbody2D rb;
     private Transform target;
@@ -25,10 +28,17 @@ public class BazookaProjectile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Initialize(Transform enemy, float attackDamage)
+    public void Initialize(
+    Transform enemy,
+    float attackDamage,
+    float explosionMultiplier = 1f)
     {
         target = enemy;
         damage = attackDamage;
+
+        currentExplosionRadius =
+            explosionRadius * explosionMultiplier;
+
         initialized = true;
 
         Destroy(gameObject, lifeTime);
