@@ -5101,12 +5101,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1465
-        y: 1017
-        width: 42
-        height: 35
+        y: 1020
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 3, y: 0, z: 2, w: 1}
       customData: 
       outline: []
       physicsShape: []

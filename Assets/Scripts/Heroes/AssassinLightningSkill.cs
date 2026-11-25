@@ -1,23 +1,28 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))] // Bắt buộc phải có Collider2D để nhận click chuột vào nhân vật
 public class AssassinLightningSkill : MonoBehaviour
 {
     [Header("Cài đặt Tia điện")]
     public GameObject lightningPrefab;   // Kéo Prefab tia điện vào đây
-    public Transform spawnPoint;         // Điểm xuất phát tia điện (có thể kéo object Knife hoặc tạo 1 Empty Object ở đầu mũi dao)
+    public Transform spawnPoint;         // Kéo object con SpawnPoint vào đây
 
     [Header("Thông số phóng và thu nhỏ")]
-    public Vector3 maxScale = new Vector3(1.5f, 1f, 1f); // Kích thước tối đa khi phóng ra
-    public float expandDuration = 0.08f; // Thời gian phóng tia điện đạt cực đại (rất nhanh)
-    public float shrinkDuration = 0.25f; // Thời gian tia điện thu nhỏ dần rồi biến mất
+    public Vector3 maxScale = new Vector3(5f, 5f, 1f);
+    public float expandDuration = 0.08f;
+    public float shrinkDuration = 0.25f;
+    [Header("Góc xoay bổ sung")]
+    public float rotationOffsetZ = 315f; // Nhập số độ bạn muốn xoay ở đây
+
+    // Tại hàm Instantiate trong CastLightningRoutine(), sửa thành:
+
 
     private bool isCasting = false;
+    private Collider2D myCollider;
 
     void Start()
     {
-        // Nếu chưa gán điểm xuất phát, mặc định lấy vị trí của Knife hoặc chính Assasin
+        myCollider = GetComponent<Collider2D>();
         if (spawnPoint == null)
         {
             Transform knife = transform.Find("Knife");
@@ -25,12 +30,20 @@ public class AssassinLightningSkill : MonoBehaviour
         }
     }
 
-    // Hàm tự động của Unity: Kích hoạt khi click chuột trái trúng vùng Collider2D của Assasin
-    void OnMouseDown()
+    void Update()
     {
-        if (!isCasting && lightningPrefab != null)
+        // Kiểm tra khi người chơi nhấn chuột trái
+        if (Input.GetMouseButtonDown(0) && !isCasting && lightningPrefab != null)
         {
-            StartCoroutine(CastLightningRoutine());
+            // Bắn một tia Raycast từ vị trí chuột ngoài màn hình vào không gian 2D trong Scene
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+            // Nếu tia Raycast trúng đúng Collider của chính nhân vật này
+            if (hit.collider != null && hit.collider == myCollider)
+            {
+                StartCoroutine(CastLightningRoutine());
+            }
         }
     }
 
@@ -38,11 +51,13 @@ public class AssassinLightningSkill : MonoBehaviour
     {
         isCasting = true;
 
-        // 1. Tạo tia điện tại điểm xuất phát với kích thước ban đầu bằng 0
-        GameObject lightning = Instantiate(lightningPrefab, spawnPoint.position, spawnPoint.rotation);
+        // Ép tọa độ Z về 0 để chắc chắn tia sét không bị ẩn sau Camera
+        Vector3 spawnPos = new Vector3(spawnPoint.position.x, spawnPoint.position.y, 0f);
+        Quaternion customRot = spawnPoint.rotation * Quaternion.Euler(0, 0, rotationOffsetZ);
+        GameObject lightning = Instantiate(lightningPrefab, spawnPos, customRot);
         lightning.transform.localScale = Vector3.zero;
 
-        // 2. Phóng tia điện ra kích thước tối đa (Expand)
+        // Phóng to
         float elapsed = 0f;
         while (elapsed < expandDuration)
         {
@@ -53,18 +68,16 @@ public class AssassinLightningSkill : MonoBehaviour
         }
         lightning.transform.localScale = maxScale;
 
-        // 3. Thu nhỏ tia điện dần về 0 (Shrink)
+        // Thu nhỏ
         elapsed = 0f;
         while (elapsed < shrinkDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / shrinkDuration;
-            // Thu nhỏ mượt mà từ maxScale về Vector3.zero
             lightning.transform.localScale = Vector3.Lerp(maxScale, Vector3.zero, t);
             yield return null;
         }
 
-        // 4. Xóa hẳn tia điện khỏi Scene khi đã thu nhỏ xong
         Destroy(lightning);
         isCasting = false;
     }
