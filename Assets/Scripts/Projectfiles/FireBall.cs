@@ -1,10 +1,14 @@
+
 using UnityEngine;
+using UngrownCastle.Enemies;
 
 public class Fireball : MonoBehaviour
 {
     private Transform target;
     private float damage;
     private float speed;
+
+    private bool hasHit;
 
     public void Initialize(
         Transform target,
@@ -18,48 +22,63 @@ public class Fireball : MonoBehaviour
 
     private void Update()
     {
+        if (hasHit)
+            return;
+
         if (target == null)
         {
             Destroy(gameObject);
             return;
         }
 
+        // Hướng bay đến Enemy
         Vector2 direction =
-            (target.position - transform.position).normalized;
+            ((Vector2)target.position -
+            (Vector2)transform.position).normalized;
 
+        // Di chuyển Fireball
         transform.position +=
             (Vector3)(direction * speed * Time.deltaTime);
 
+        // Xoay Fireball theo hướng bay
         float angle = Mathf.Atan2(
             direction.y,
             direction.x
         ) * Mathf.Rad2Deg;
 
         transform.rotation = Quaternion.Euler(
-            0, 0, angle
+            0f,
+            0f,
+            angle
         );
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (target == null)
+        if (hasHit || target == null)
             return;
 
-        // Kiểm tra có chạm đúng Enemy/Dummy đang nhắm không
+        // Kiểm tra có chạm đúng Enemy đang nhắm
         if (other.transform == target ||
             other.transform.IsChildOf(target))
         {
-            // Gây sát thương nếu có DummyTarget
-            DummyTarget dummy =
-                other.GetComponentInParent<DummyTarget>();
+            Enemy enemy =
+                other.GetComponentInParent<Enemy>();
 
-            if (dummy != null)
+            if (enemy != null && !enemy.IsDead)
             {
-                dummy.TakeDamage(damage);
-            }
+                hasHit = true;
 
-            // Hủy Fireball
-            Destroy(this.gameObject);
+                // Gây sát thương trực tiếp
+                enemy.TakeDamage(damage);
+
+                Debug.Log(
+                    $"Fireball hit {enemy.EnemyName} " +
+                    $"for {damage} damage!"
+                );
+
+                Destroy(gameObject);
+            }
         }
     }
 }

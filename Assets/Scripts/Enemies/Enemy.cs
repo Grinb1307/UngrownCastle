@@ -40,8 +40,10 @@ namespace UngrownCastle.Enemies
         private bool isFlashing;
 
         private readonly Color frozenColor = new Color(
-            0.4f, 0.8f, 1f, 1f
+            0.1f, 0.3f, 0.75f, 1f
         );
+        private readonly Color slowedColor = Color.cyan;
+
 
         // Current runtime stats
         private float currentHp;
@@ -104,7 +106,7 @@ namespace UngrownCastle.Enemies
 
         private void Update()
         {
-            if (state == EnemyState.Dead || isTrainingDummy)
+            if (state == EnemyState.Dead || isTrainingDummy || isFrozen)
                 return;
 
             float targetX = targetCastle != null ? targetCastle.position.x : castleStopX;
@@ -251,6 +253,7 @@ namespace UngrownCastle.Enemies
             isFlying = flying;
         }
         // Áp dụng hiệu ứng làm chậm
+        // Chỉ làm chậm, không đóng băng hoàn toàn
         public void ApplySlow(float multiplier, float duration)
         {
             if (state == EnemyState.Dead)
@@ -262,9 +265,34 @@ namespace UngrownCastle.Enemies
             slowCoroutine = StartCoroutine(
                 SlowRoutine(multiplier, duration)
             );
+        }
+        // Đóng băng Enemy hoàn toàn
+        public void Freeze(float duration)
+        {
+            if (state == EnemyState.Dead)
+                return;
 
-            // Đồng thời chuyển màu Enemy thành xanh băng
-            ApplyFreezeColor(duration);
+            if (freezeCoroutine != null)
+                StopCoroutine(freezeCoroutine);
+
+            freezeCoroutine = StartCoroutine(
+                FreezeRoutine(duration)
+            );
+        }
+
+        private IEnumerator FreezeRoutine(float duration)
+        {
+            isFrozen = true;
+
+            UpdateEnemyColor();
+
+            yield return new WaitForSeconds(duration);
+
+            isFrozen = false;
+
+            freezeCoroutine = null;
+
+            UpdateEnemyColor();
         }
 
         // Coroutine làm chậm
@@ -272,32 +300,12 @@ namespace UngrownCastle.Enemies
         {
             slowMultiplier = Mathf.Clamp(multiplier, 0f, 1f);
 
-            yield return new WaitForSeconds(duration);
-
-            slowMultiplier = 1f;
-            slowCoroutine = null;
-        }
-        // Áp dụng hiệu ứng đóng băng
-        private void ApplyFreezeColor(float duration)
-        {
-            if (freezeCoroutine != null)
-                StopCoroutine(freezeCoroutine);
-
-            freezeCoroutine = StartCoroutine(
-                FreezeColorRoutine(duration)
-            );
-        }
-
-        // Coroutine đổi màu xanh
-        private IEnumerator FreezeColorRoutine(float duration)
-        {
-            isFrozen = true;
             UpdateEnemyColor();
 
             yield return new WaitForSeconds(duration);
 
-            isFrozen = false;
-            freezeCoroutine = null;
+            slowMultiplier = 1f;
+            slowCoroutine = null;
 
             UpdateEnemyColor();
         }
@@ -314,6 +322,8 @@ namespace UngrownCastle.Enemies
                 currentColor = Color.red;
             else if (isFrozen)
                 currentColor = frozenColor;
+            else if (slowMultiplier < 1f)
+                currentColor = slowedColor;
             else
                 currentColor = Color.white;
 

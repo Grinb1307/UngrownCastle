@@ -1,5 +1,7 @@
 
 using UnityEngine;
+using System.Collections.Generic;
+using UngrownCastle.Enemies;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
@@ -13,9 +15,14 @@ public class BazookaProjectile : MonoBehaviour
 
     [Header("Lifetime")]
     [SerializeField] private float lifeTime = 5f;
-    [SerializeField] private float explosionRadius = 2f;
 
-    private float currentExplosionRadius;
+    [Header("Explosion")]
+    [SerializeField] private float explosionRadius = 2f;
+    [SerializeField] private float explosionDamageMultiplier = 1f;
+
+    [Header("Explosion Effect")]
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private float explosionLifetime = 1f;
 
     private Rigidbody2D rb;
     private Transform target;
@@ -29,15 +36,14 @@ public class BazookaProjectile : MonoBehaviour
     }
 
     public void Initialize(
-    Transform enemy,
-    float attackDamage,
-    float explosionMultiplier = 1f)
+        Transform enemy,
+        float attackDamage,
+        float explosionMultiplier = 1f)
     {
         target = enemy;
         damage = attackDamage;
 
-        currentExplosionRadius =
-            explosionRadius * explosionMultiplier;
+        explosionDamageMultiplier = explosionMultiplier;
 
         initialized = true;
 
@@ -99,21 +105,80 @@ public class BazookaProjectile : MonoBehaviour
 
         hasHit = true;
 
-        // Gây sát thương
-        DummyTarget enemy =
-            other.GetComponentInParent<DummyTarget>();
+        // Vị trí xảy ra vụ nổ
+        Vector2 explosionPosition = transform.position;
 
-        if (enemy != null)
-        {
-            enemy.TakeDamage(damage);
-        }
+        // Gây sát thương diện rộng
+        Explode(explosionPosition);
 
         // Dừng vật lý
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
         rb.simulated = false;
 
-        // Hủy đạn
+        // Hủy projectile
         Destroy(gameObject);
+    }
+
+    private void Explode(Vector2 position)
+    {
+        // Tạo hiệu ứng nổ
+        if (explosionPrefab != null)
+        {
+            GameObject explosion = Instantiate(
+                explosionPrefab,
+                position,
+                Quaternion.identity
+            );
+
+            SpriteRenderer sr = explosion.GetComponent<SpriteRenderer>();
+
+            if (sr != null)
+            {
+                // Kích thước mong muốn = đường kính vùng damage
+                float targetSize = explosionRadius * 1.5f;
+
+                // Kích thước sprite gốc
+                Vector2 spriteSize = sr.bounds.size;
+
+                // Tính scale để sprite bằng vùng damage
+                explosion.transform.localScale = new Vector3(
+                    explosion.transform.localScale.x * targetSize / spriteSize.x,
+                    explosion.transform.localScale.y * targetSize / spriteSize.y,
+                    1f
+                );
+            }
+
+            Destroy(explosion, explosionLifetime);
+        }
+
+        // Tính damage trong vùng nổ
+        Collider2D[] hits = Physics2D.OverlapCircleAll(
+            position,
+            explosionRadius
+        );
+
+        HashSet<Enemy> damagedEnemies = new HashSet<Enemy>();
+
+        foreach (Collider2D hit in hits)
+        {
+            Enemy enemy = hit.GetComponentInParent<Enemy>();
+
+            if (enemy == null || enemy.IsDead || damagedEnemies.Contains(enemy))
+                continue;
+
+            damagedEnemies.Add(enemy);
+            enemy.TakeDamage(damage * explosionDamageMultiplier);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(
+            transform.position,
+            explosionRadius
+        );
     }
 }

@@ -1,30 +1,31 @@
-
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UngrownCastle.Enemies;
 
 public class IceSocceress : IceHeroes
 {
-    [Header("Ice Mage Skill")]
-    [SerializeField] private GameObject iceSpikeZonePrefab;
+    [Header("Ice Rain Sprites")]
+    [SerializeField] private Sprite[] iceRainSprites;
 
-    [Header("Ice Spike Sprites")]
-    [SerializeField] private Sprite[] spikeSprites;
-    [SerializeField] private int spikeCount = 10;
-    [SerializeField] private float spikeVisualRadius = 2.5f;
+    [Header("Ice Rain Settings")]
+    [SerializeField] private int rainDropCount = 20;
+    [SerializeField] private float rainSpawnHeight = 5f;
+    [SerializeField] private float rainFallSpeed = 12f;
+    [SerializeField] private float rainDuration = 1.2f;
+    [SerializeField] private int sortingOrder = 5;
 
-    [Header("Spike Appearance")]
+    [Header("Ice Rain Appearance")]
     [SerializeField]
-    private Vector2 spikeScaleRange =
+    private Vector2 iceScaleRange =
         new Vector2(0.8f, 1.2f);
 
     [SerializeField] private float randomRotation = 15f;
-    [SerializeField] private int sortingOrder = 1;
 
     [Header("Skill Stats")]
     [SerializeField] private float skillRadius = 3f;
     [SerializeField] private float skillDamage = 30f;
-    [SerializeField] private float slowMultiplier = 0.5f;
-    [SerializeField] private float slowDuration = 3f;
-    [SerializeField] private float skillLifetime = 2f;
+    [SerializeField] private float freezeDuration = 3f;
 
     [Header("Skill Targeting")]
     [SerializeField] private GameObject targetingCircleObject;
@@ -34,46 +35,41 @@ public class IceSocceress : IceHeroes
 
     private void Awake()
     {
-        // Ẩn vòng tròn khi bắt đầu game
         if (targetingCircleObject != null)
-        {
             targetingCircleObject.SetActive(false);
-        }
     }
 
     protected override bool CanUseSkill()
     {
-        return iceSpikeZonePrefab != null
-            && spikeSprites != null
-            && spikeSprites.Length > 0
+        return iceRainSprites != null
+            && iceRainSprites.Length > 0
             && targetingCircleObject != null
             && !isSelectingArea;
     }
 
-    // Bắt đầu chọn vị trí sử dụng skill
+    // Bắt đầu chọn vùng sử dụng skill
     public override void UseSkill()
     {
         isSelectingArea = true;
         waitingForMouseRelease = true;
 
-        // Hiện vòng tròn
         targetingCircleObject.SetActive(true);
 
-        // Chỉnh kích thước theo bán kính skill
         targetingCircleObject.transform.localScale =
             Vector3.one * (skillRadius * 2f);
 
-        Debug.Log("Ice Socceress: Hãy chọn vùng sử dụng skill!");
+        Debug.Log("Ice Socceress: Chọn vùng để gọi mưa băng!");
     }
 
     protected override void Update()
     {
+        // Giữ nguyên hoạt động đánh thường của IceHeroes
         base.Update();
 
         if (!isSelectingArea)
             return;
 
-        // Chờ thả chuột sau khi click vào Ice Socceress
+        // Chờ thả chuột sau khi click vào Hero
         if (waitingForMouseRelease)
         {
             if (!Input.GetMouseButton(0))
@@ -84,10 +80,10 @@ public class IceSocceress : IceHeroes
 
         UpdateTargetingPosition();
 
-        // Click trái để xác nhận
+        // Click trái để xác nhận vùng
         if (Input.GetMouseButtonDown(0))
         {
-            CastIceSkill();
+            CastIceRain();
         }
 
         // Click phải để hủy
@@ -97,7 +93,6 @@ public class IceSocceress : IceHeroes
         }
     }
 
-    // Lấy vị trí chuột trong World
     private Vector2 GetMouseWorldPosition()
     {
         Camera cam = Camera.main;
@@ -111,13 +106,9 @@ public class IceSocceress : IceHeroes
         Vector3 worldPosition =
             cam.ScreenToWorldPoint(mousePosition);
 
-        return new Vector2(
-            worldPosition.x,
-            worldPosition.y
-        );
+        return new Vector2(worldPosition.x, worldPosition.y);
     }
 
-    // Di chuyển vòng tròn theo chuột
     private void UpdateTargetingPosition()
     {
         Vector2 position = GetMouseWorldPosition();
@@ -126,109 +117,152 @@ public class IceSocceress : IceHeroes
             new Vector3(position.x, position.y, 0f);
     }
 
-    // Xác nhận vị trí và thi triển skill
-    private void CastIceSkill()
+    // Xác nhận vùng và thi triển skill
+    private void CastIceRain()
     {
         Vector2 skillPosition = GetMouseWorldPosition();
 
-        GameObject zone = Instantiate(
-            iceSpikeZonePrefab,
-            skillPosition,
-            Quaternion.identity
-        );
+        // Gây sát thương và đóng băng Enemy trong vùng
+        ApplyIceEffect(skillPosition);
 
-        CreateSpikeVisuals(zone.transform);
-
-        IceSpikeZone iceZone =
-            zone.GetComponent<IceSpikeZone>();
-
-        if (iceZone != null)
-        {
-            iceZone.Initialize(
-                skillRadius,
-                skillDamage,
-                slowMultiplier,
-                slowDuration,
-                skillLifetime,
-                enemyLayer
-            );
-        }
-        else
-        {
-            Debug.LogError(
-                "Ice Spike Zone Prefab thiếu IceSpikeZone!"
-            );
-
-            Destroy(zone);
-        }
+        // Tạo hiệu ứng mưa băng
+        StartCoroutine(SpawnIceRain(skillPosition));
 
         FinishSkillSelection();
+
+        Debug.Log("Ice Socceress: Đã sử dụng Mưa Băng!");
     }
 
-    // Tạo nhiều thanh gai băng
-    private void CreateSpikeVisuals(Transform parent)
+    // Tìm Enemy trong vùng và áp dụng hiệu ứng
+    private void ApplyIceEffect(Vector2 position)
     {
-        for (int i = 0; i < spikeCount; i++)
+        Collider2D[] hits = Physics2D.OverlapCircleAll(
+            position,
+            skillRadius,
+            enemyLayer
+        );
+
+        // Tránh gây sát thương nhiều lần cho Enemy có nhiều Collider
+        HashSet<Enemy> affectedEnemies = new HashSet<Enemy>();
+
+        foreach (Collider2D hit in hits)
         {
-            Sprite sprite =
-                spikeSprites[i % spikeSprites.Length];
+            Enemy enemy = hit.GetComponentInParent<Enemy>();
 
-            Vector2 offset =
-                Random.insideUnitCircle * spikeVisualRadius;
+            if (enemy == null || enemy.IsDead)
+                continue;
 
-            GameObject spike = new GameObject("IceSpike");
+            if (affectedEnemies.Contains(enemy))
+                continue;
 
-            spike.transform.SetParent(parent, false);
+            affectedEnemies.Add(enemy);
 
-            spike.transform.localPosition =
-                new Vector3(offset.x, offset.y, 0f);
+            enemy.TakeDamage(skillDamage);
+            enemy.Freeze(freezeDuration);
+        }
 
-            float angle = Random.Range(
-                -randomRotation,
-                randomRotation
-            );
+        Debug.Log($"Mưa Băng trúng {affectedEnemies.Count} Enemy!");
+    }
 
-            spike.transform.localRotation =
-                Quaternion.Euler(0f, 0f, angle);
+    // Tạo các sprite băng rơi từ trên trời
+    private IEnumerator SpawnIceRain(Vector2 center)
+    {
+        float delay = rainDuration / Mathf.Max(rainDropCount, 1);
 
-            float scale = Random.Range(
-                spikeScaleRange.x,
-                spikeScaleRange.y
-            );
+        for (int i = 0; i < rainDropCount; i++)
+        {
+            Vector2 offset = Random.insideUnitCircle * skillRadius;
 
-            spike.transform.localScale =
-                new Vector3(scale, scale, 1f);
+            Vector2 landingPosition = center + offset;
 
-            SpriteRenderer sr =
-                spike.AddComponent<SpriteRenderer>();
+            CreateIceDrop(landingPosition);
 
-            sr.sprite = sprite;
-            sr.sortingOrder = sortingOrder;
+            yield return new WaitForSeconds(delay);
         }
     }
 
-    // Hủy chọn vùng
+    private void CreateIceDrop(Vector2 landingPosition)
+    {
+        Sprite sprite = iceRainSprites[
+            Random.Range(0, iceRainSprites.Length)
+        ];
+
+        GameObject iceDrop = new GameObject("IceRainDrop");
+
+        SpriteRenderer sr = iceDrop.AddComponent<SpriteRenderer>();
+
+        sr.sprite = sprite;
+        sr.sortingOrder = sortingOrder;
+
+        float scale = Random.Range(
+            iceScaleRange.x,
+            iceScaleRange.y
+        );
+
+        iceDrop.transform.localScale =
+            new Vector3(scale, scale, 1f);
+
+        float angle = Random.Range(
+            -randomRotation,
+            randomRotation
+        );
+
+        iceDrop.transform.rotation =
+            Quaternion.Euler(0f, 0f, angle);
+
+        Vector2 startPosition =
+            landingPosition + Vector2.up * rainSpawnHeight;
+
+        iceDrop.transform.position = startPosition;
+
+        StartCoroutine(FallIceDrop(iceDrop, landingPosition));
+    }
+
+    // Điều khiển sprite băng rơi xuống
+    private IEnumerator FallIceDrop(
+        GameObject iceDrop,
+        Vector2 landingPosition)
+    {
+        while (iceDrop != null)
+        {
+            iceDrop.transform.position = Vector2.MoveTowards(
+                iceDrop.transform.position,
+                landingPosition,
+                rainFallSpeed * Time.deltaTime
+            );
+
+            float distance = Vector2.Distance(
+                iceDrop.transform.position,
+                landingPosition
+            );
+
+            if (distance < 0.05f)
+                break;
+
+            yield return null;
+        }
+
+        if (iceDrop != null)
+            Destroy(iceDrop);
+    }
+
     private void CancelSkill()
     {
         FinishSkillSelection();
 
-        // Hoàn lại mana
+        // Hoàn lại mana nếu người chơi hủy
         currentMana = maxMana;
 
-        Debug.Log("Đã hủy chọn vùng băng!");
+        Debug.Log("Đã hủy Mưa Băng!");
     }
 
-    // Kết thúc quá trình chọn vị trí
     private void FinishSkillSelection()
     {
         isSelectingArea = false;
         waitingForMouseRelease = false;
 
-        // Ẩn vòng tròn thay vì Destroy
         if (targetingCircleObject != null)
-        {
             targetingCircleObject.SetActive(false);
-        }
     }
 
     private void OnDisable()
