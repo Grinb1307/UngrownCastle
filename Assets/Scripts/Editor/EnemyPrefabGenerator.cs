@@ -12,7 +12,7 @@ namespace UngrownCastle.Editor
         private const string CommonDir = "Assets/Sprites/Enemies/Common";
 
         [MenuItem("Tools/UngrownCastle/Generate All Enemy Prefabs (Full Limbs)")]
-        [InitializeOnLoadMethod]
+
         public static void GenerateAllEnemies()
         {
             if (!Directory.Exists(PrefabOutputDir))
