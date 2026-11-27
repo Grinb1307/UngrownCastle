@@ -1,0 +1,912 @@
+[
+  {
+    "folder": "Calendar",
+    "file": "text_30_days.png",
+    "x": 1698,
+    "y": 1028,
+    "width": 284,
+    "height": 76,
+    "parent": "reward_button",
+    "pixels": "13005,8579"
+  },
+  {
+    "folder": "Calendar",
+    "file": "arrow_3.png",
+    "x": 1776,
+    "y": 361,
+    "width": 50,
+    "height": 95,
+    "parent": "panel_background",
+    "pixels": "1329,3421"
+  },
+  {
+    "folder": "Calendar",
+    "file": "icon_box_day_6.png",
+    "x": 1840,
+    "y": 700,
+    "width": 111,
+    "height": 121,
+    "parent": "day_6_card",
+    "pixels": "7960,5471"
+  },
+  {
+    "folder": "Calendar",
+    "file": "text_day_5.png",
+    "x": 1426,
+    "y": 611,
+    "width": 215,
+    "height": 73,
+    "parent": "day_5_card",
+    "pixels": "8653,7042"
+  },
+  {
+    "folder": "Calendar",
+    "file": "day_4_card.png",
+    "x": 1040,
+    "y": 601,
+    "width": 278,
+    "height": 312,
+    "parent": "panel_background",
+    "pixels": "59101,27635"
+  },
+  {
+    "folder": "Calendar",
+    "file": "day_2_card.png",
+    "x": 1127,
+    "y": 254,
+    "width": 275,
+    "height": 311,
+    "parent": "panel_background",
+    "pixels": "52402,33123"
+  },
+  {
+    "folder": "Calendar",
+    "file": "checkbox_tick.png",
+    "x": 752,
+    "y": 955,
+    "width": 65,
+    "height": 58,
+    "parent": "checkbox_disc",
+    "pixels": "1553,2217"
+  },
+  {
+    "folder": "Calendar",
+    "file": "day_1_card.png",
+    "x": 766,
+    "y": 254,
+    "width": 280,
+    "height": 311,
+    "parent": "panel_background",
+    "pixels": "51887,35193"
+  },
+  {
+    "folder": "Calendar",
+    "file": "close_x.png",
+    "x": 1992,
+    "y": 124,
+    "width": 60,
+    "height": 59,
+    "parent": "close_button",
+    "pixels": "1371,2169"
+  },
+  {
+    "folder": "Calendar",
+    "file": "amount_day_5.png",
+    "x": 1586,
+    "y": 849,
+    "width": 73,
+    "height": 56,
+    "parent": "day_5_card",
+    "pixels": "1667,2421"
+  },
+  {
+    "folder": "Calendar",
+    "file": "timer_11_00_48.png",
+    "x": 1680,
+    "y": 157,
+    "width": 275,
+    "height": 62,
+    "parent": "panel_background",
+    "pixels": "9500,7550"
+  },
+  {
+    "folder": "Calendar",
+    "file": "text_day_1_visible.png",
+    "x": 872,
+    "y": 264,
+    "width": 143,
+    "height": 73,
+    "parent": "day_1_card",
+    "pixels": "4377,6062"
+  },
+  {
+    "folder": "Calendar",
+    "file": "reward_button.png",
+    "x": 1624,
+    "y": 938,
+    "width": 441,
+    "height": 184,
+    "parent": "panel_background",
+    "pixels": "42744,38400"
+  },
+  {
+    "folder": "Calendar",
+    "file": "icon_autobattle_day_3.png",
+    "x": 1554,
+    "y": 342,
+    "width": 134,
+    "height": 145,
+    "parent": "day_3_card",
+    "pixels": "9529,9901"
+  },
+  {
+    "folder": "Calendar",
+    "file": "icon_gold_day_2.png",
+    "x": 1207,
+    "y": 359,
+    "width": 116,
+    "height": 113,
+    "parent": "day_2_card",
+    "pixels": "8592,4516"
+  },
+  {
+    "folder": "Calendar",
+    "file": "icon_chest_day_5.png",
+    "x": 1462,
+    "y": 690,
+    "width": 147,
+    "height": 142,
+    "parent": "day_5_card",
+    "pixels": "15670,5204"
+  },
+  {
+    "folder": "Calendar",
+    "file": "icon_crystal_day_4.png",
+    "x": 1110,
+    "y": 694,
+    "width": 139,
+    "height": 137,
+    "parent": "day_4_card",
+    "pixels": "12105,6938"
+  },
+  {
+    "folder": "Calendar",
+    "file": "day_3_card.png",
+    "x": 1484,
+    "y": 254,
+    "width": 277,
+    "height": 310,
+    "parent": "panel_background",
+    "pixels": "59868,26002"
+  },
+  {
+    "folder": "Calendar",
+    "file": "checkbox_disc.png",
+    "x": 745,
+    "y": 953,
+    "width": 75,
+    "height": 78,
+    "parent": "panel_background",
+    "pixels": "2530,3320"
+  },
+  {
+    "folder": "Calendar",
+    "file": "text_day_3.png",
+    "x": 1510,
+    "y": 265,
+    "width": 218,
+    "height": 71,
+    "parent": "day_3_card",
+    "pixels": "8431,7047"
+  },
+  {
+    "folder": "Calendar",
+    "file": "panel_background.png",
+    "x": 716,
+    "y": 132,
+    "width": 1362,
+    "height": 1023,
+    "parent": "",
+    "pixels": "623987,769339"
+  },
+  {
+    "folder": "Calendar",
+    "file": "day_5_card.png",
+    "x": 1398,
+    "y": 600,
+    "width": 280,
+    "height": 313,
+    "parent": "panel_background",
+    "pixels": "57064,30576"
+  },
+  {
+    "folder": "Calendar",
+    "file": "text_day_4.png",
+    "x": 1066,
+    "y": 611,
+    "width": 211,
+    "height": 73,
+    "parent": "day_4_card",
+    "pixels": "8029,7374"
+  },
+  {
+    "folder": "Calendar",
+    "file": "amount_day_4.png",
+    "x": 1194,
+    "y": 848,
+    "width": 109,
+    "height": 56,
+    "parent": "day_4_card",
+    "pixels": "3494,2610"
+  },
+  {
+    "folder": "Calendar",
+    "file": "text_reward_x5.png",
+    "x": 1635,
+    "y": 940,
+    "width": 408,
+    "height": 90,
+    "parent": "reward_button",
+    "pixels": "19777,16943"
+  },
+  {
+    "folder": "Calendar",
+    "file": "text_auto_enable.png",
+    "x": 830,
+    "y": 948,
+    "width": 384,
+    "height": 81,
+    "parent": "panel_background",
+    "pixels": "16148,14956"
+  },
+  {
+    "folder": "Calendar",
+    "file": "amount_day_6.png",
+    "x": 1942,
+    "y": 848,
+    "width": 79,
+    "height": 56,
+    "parent": "day_6_card",
+    "pixels": "1959,2465"
+  },
+  {
+    "folder": "Calendar",
+    "file": "text_day_2_visible.png",
+    "x": 1230,
+    "y": 264,
+    "width": 140,
+    "height": 73,
+    "parent": "day_2_card",
+    "pixels": "4693,5527"
+  },
+  {
+    "folder": "Calendar",
+    "file": "arrow_1.png",
+    "x": 1060,
+    "y": 361,
+    "width": 50,
+    "height": 95,
+    "parent": "panel_background",
+    "pixels": "1310,3440"
+  },
+  {
+    "folder": "Calendar",
+    "file": "amount_day_2.png",
+    "x": 1214,
+    "y": 500,
+    "width": 174,
+    "height": 56,
+    "parent": "day_2_card",
+    "pixels": "4892,4852"
+  },
+  {
+    "folder": "Calendar",
+    "file": "title_diem_danh.png",
+    "x": 1203,
+    "y": 120,
+    "width": 378,
+    "height": 98,
+    "parent": "panel_background",
+    "pixels": "26616,10428"
+  },
+  {
+    "folder": "Calendar",
+    "file": "seal_day_1.png",
+    "x": 751,
+    "y": 233,
+    "width": 140,
+    "height": 160,
+    "parent": "day_1_card",
+    "pixels": "12573,9827"
+  },
+  {
+    "folder": "Calendar",
+    "file": "amount_day_3.png",
+    "x": 1573,
+    "y": 501,
+    "width": 176,
+    "height": 56,
+    "parent": "day_3_card",
+    "pixels": "5036,4820"
+  },
+  {
+    "folder": "Calendar",
+    "file": "day_6_card.png",
+    "x": 1754,
+    "y": 600,
+    "width": 280,
+    "height": 313,
+    "parent": "panel_background",
+    "pixels": "64698,22942"
+  },
+  {
+    "folder": "Calendar",
+    "file": "arrow_2.png",
+    "x": 1418,
+    "y": 361,
+    "width": 50,
+    "height": 95,
+    "parent": "panel_background",
+    "pixels": "1299,3451"
+  },
+  {
+    "folder": "Calendar",
+    "file": "close_button.png",
+    "x": 1964,
+    "y": 96,
+    "width": 117,
+    "height": 119,
+    "parent": "panel_background",
+    "pixels": "8488,5435"
+  },
+  {
+    "folder": "Calendar",
+    "file": "arrow_4.png",
+    "x": 1334,
+    "y": 709,
+    "width": 50,
+    "height": 96,
+    "parent": "panel_background",
+    "pixels": "1318,3482"
+  },
+  {
+    "folder": "Calendar",
+    "file": "icon_crystal_day_1.png",
+    "x": 839,
+    "y": 348,
+    "width": 136,
+    "height": 133,
+    "parent": "day_1_card",
+    "pixels": "12116,5972"
+  },
+  {
+    "folder": "Calendar",
+    "file": "seal_day_2.png",
+    "x": 1110,
+    "y": 234,
+    "width": 139,
+    "height": 159,
+    "parent": "day_2_card",
+    "pixels": "12573,9528"
+  },
+  {
+    "folder": "Calendar",
+    "file": "amount_day_1.png",
+    "x": 924,
+    "y": 501,
+    "width": 105,
+    "height": 55,
+    "parent": "day_1_card",
+    "pixels": "3412,2363"
+  },
+  {
+    "folder": "Calendar",
+    "file": "text_day_6.png",
+    "x": 1783,
+    "y": 611,
+    "width": 217,
+    "height": 73,
+    "parent": "day_6_card",
+    "pixels": "8421,7420"
+  },
+  {
+    "folder": "Setting",
+    "file": "language_arrow.png",
+    "x": 2387,
+    "y": 1080,
+    "width": 42,
+    "height": 46,
+    "parent": "language_dropdown",
+    "pixels": "712,1220"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_version_label.png",
+    "x": 892,
+    "y": 170,
+    "width": 325,
+    "height": 74,
+    "parent": "version_panel",
+    "pixels": "16412,7638"
+  },
+  {
+    "folder": "Setting",
+    "file": "sell_text_off.png",
+    "x": 2264,
+    "y": 934,
+    "width": 91,
+    "height": 54,
+    "parent": "sell_dropdown",
+    "pixels": "2502,2412"
+  },
+  {
+    "folder": "Setting",
+    "file": "panel_background.png",
+    "x": 1636,
+    "y": 12,
+    "width": 906,
+    "height": 1272,
+    "parent": "",
+    "pixels": "783813,368619"
+  },
+  {
+    "folder": "Setting",
+    "file": "delete_frame.png",
+    "x": 295,
+    "y": 1083,
+    "width": 899,
+    "height": 198,
+    "parent": "",
+    "pixels": "47853,130149"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_language.png",
+    "x": 1875,
+    "y": 1074,
+    "width": 294,
+    "height": 62,
+    "parent": "panel_background",
+    "pixels": "11887,6341"
+  },
+  {
+    "folder": "Setting",
+    "file": "icon_delete.png",
+    "x": 356,
+    "y": 1132,
+    "width": 88,
+    "height": 107,
+    "parent": "delete_button",
+    "pixels": "5316,4100"
+  },
+  {
+    "folder": "Setting",
+    "file": "autosave_on_fill.png",
+    "x": 2236,
+    "y": 638,
+    "width": 138,
+    "height": 77,
+    "parent": "autosave_toggle",
+    "pixels": "6662,3964"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_sell_lock.png",
+    "x": 1875,
+    "y": 930,
+    "width": 304,
+    "height": 65,
+    "parent": "panel_background",
+    "pixels": "10109,9651"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_privacy_policy.png",
+    "x": 2005,
+    "y": 1185,
+    "width": 450,
+    "height": 66,
+    "parent": "panel_background",
+    "pixels": "22975,6725"
+  },
+  {
+    "folder": "Setting",
+    "file": "effect_arrow.png",
+    "x": 2387,
+    "y": 462,
+    "width": 42,
+    "height": 47,
+    "parent": "effect_dropdown",
+    "pixels": "710,1264"
+  },
+  {
+    "folder": "Setting",
+    "file": "close_x.png",
+    "x": 2446,
+    "y": 109,
+    "width": 64,
+    "height": 60,
+    "parent": "close_button",
+    "pixels": "1400,2440"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_latest_number.png",
+    "x": 1255,
+    "y": 255,
+    "width": 238,
+    "height": 64,
+    "parent": "version_panel",
+    "pixels": "8454,6778"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_version_number.png",
+    "x": 1255,
+    "y": 178,
+    "width": 238,
+    "height": 66,
+    "parent": "version_panel",
+    "pixels": "9019,6689"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_levelup.png",
+    "x": 1874,
+    "y": 786,
+    "width": 273,
+    "height": 64,
+    "parent": "panel_background",
+    "pixels": "9222,8250"
+  },
+  {
+    "folder": "Setting",
+    "file": "icon_patch_notes.png",
+    "x": 344,
+    "y": 198,
+    "width": 105,
+    "height": 105,
+    "parent": "patch_button",
+    "pixels": "8680,2345"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_delete_game_data.png",
+    "x": 495,
+    "y": 1148,
+    "width": 584,
+    "height": 70,
+    "parent": "delete_button",
+    "pixels": "25052,15828"
+  },
+  {
+    "folder": "Setting",
+    "file": "sell_dropdown.png",
+    "x": 2228,
+    "y": 914,
+    "width": 222,
+    "height": 97,
+    "parent": "panel_background",
+    "pixels": "14551,6983"
+  },
+  {
+    "folder": "Setting",
+    "file": "autosave_text_on.png",
+    "x": 2265,
+    "y": 651,
+    "width": 70,
+    "height": 54,
+    "parent": "autosave_on_fill",
+    "pixels": "1716,2064"
+  },
+  {
+    "folder": "Setting",
+    "file": "separator.png",
+    "x": 1727,
+    "y": 568,
+    "width": 721,
+    "height": 10,
+    "parent": "panel_background",
+    "pixels": "7210,0"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_latest_label.png",
+    "x": 892,
+    "y": 244,
+    "width": 282,
+    "height": 76,
+    "parent": "version_panel",
+    "pixels": "11998,9434"
+  },
+  {
+    "folder": "Setting",
+    "file": "effect_dropdown.png",
+    "x": 2228,
+    "y": 440,
+    "width": 222,
+    "height": 96,
+    "parent": "panel_background",
+    "pixels": "15474,5838"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_patch_notes.png",
+    "x": 554,
+    "y": 210,
+    "width": 205,
+    "height": 72,
+    "parent": "patch_button",
+    "pixels": "7422,7338"
+  },
+  {
+    "folder": "Setting",
+    "file": "patch_button.png",
+    "x": 319,
+    "y": 167,
+    "width": 559,
+    "height": 166,
+    "parent": "version_panel",
+    "pixels": "69555,23239"
+  },
+  {
+    "folder": "Setting",
+    "file": "language_text_vi.png",
+    "x": 2264,
+    "y": 1078,
+    "width": 66,
+    "height": 54,
+    "parent": "language_dropdown",
+    "pixels": "1426,2138"
+  },
+  {
+    "folder": "Setting",
+    "file": "music_handle.png",
+    "x": 2303,
+    "y": 323,
+    "width": 50,
+    "height": 86,
+    "parent": "panel_background",
+    "pixels": "3693,607"
+  },
+  {
+    "folder": "Setting",
+    "file": "sound_fill.png",
+    "x": 1904,
+    "y": 208,
+    "width": 542,
+    "height": 49,
+    "parent": "panel_background",
+    "pixels": "23836,2722"
+  },
+  {
+    "folder": "Setting",
+    "file": "icon_sell_lock.png",
+    "x": 1704,
+    "y": 903,
+    "width": 117,
+    "height": 116,
+    "parent": "panel_background",
+    "pixels": "4473,9099"
+  },
+  {
+    "folder": "Setting",
+    "file": "levelup_toggle.png",
+    "x": 2228,
+    "y": 771,
+    "width": 222,
+    "height": 96,
+    "parent": "panel_background",
+    "pixels": "10517,10795"
+  },
+  {
+    "folder": "Setting",
+    "file": "language_dropdown.png",
+    "x": 2228,
+    "y": 1057,
+    "width": 222,
+    "height": 97,
+    "parent": "panel_background",
+    "pixels": "15637,5897"
+  },
+  {
+    "folder": "Setting",
+    "file": "icon_language.png",
+    "x": 1700,
+    "y": 1046,
+    "width": 122,
+    "height": 120,
+    "parent": "panel_background",
+    "pixels": "9313,5327"
+  },
+  {
+    "folder": "Setting",
+    "file": "delete_button.png",
+    "x": 314,
+    "y": 1110,
+    "width": 861,
+    "height": 154,
+    "parent": "delete_frame",
+    "pixels": "93316,39278"
+  },
+  {
+    "folder": "Setting",
+    "file": "icon_music.png",
+    "x": 1706,
+    "y": 311,
+    "width": 98,
+    "height": 110,
+    "parent": "panel_background",
+    "pixels": "3238,7542"
+  },
+  {
+    "folder": "Setting",
+    "file": "icon_effect.png",
+    "x": 1704,
+    "y": 433,
+    "width": 114,
+    "height": 106,
+    "parent": "panel_background",
+    "pixels": "3622,8462"
+  },
+  {
+    "folder": "Setting",
+    "file": "effect_text_on.png",
+    "x": 2265,
+    "y": 460,
+    "width": 69,
+    "height": 54,
+    "parent": "effect_dropdown",
+    "pixels": "1915,1811"
+  },
+  {
+    "folder": "Setting",
+    "file": "music_fill.png",
+    "x": 1904,
+    "y": 342,
+    "width": 402,
+    "height": 49,
+    "parent": "panel_background",
+    "pixels": "18329,1369"
+  },
+  {
+    "folder": "Setting",
+    "file": "sound_handle.png",
+    "x": 2423,
+    "y": 190,
+    "width": 50,
+    "height": 85,
+    "parent": "panel_background",
+    "pixels": "3462,788"
+  },
+  {
+    "folder": "Setting",
+    "file": "sell_arrow.png",
+    "x": 2387,
+    "y": 937,
+    "width": 42,
+    "height": 46,
+    "parent": "sell_dropdown",
+    "pixels": "738,1194"
+  },
+  {
+    "folder": "Setting",
+    "file": "icon_sound.png",
+    "x": 1706,
+    "y": 180,
+    "width": 127,
+    "height": 103,
+    "parent": "panel_background",
+    "pixels": "3783,9298"
+  },
+  {
+    "folder": "Setting",
+    "file": "levelup_off_fill.png",
+    "x": 2310,
+    "y": 781,
+    "width": 132,
+    "height": 75,
+    "parent": "levelup_toggle",
+    "pixels": "5221,4679"
+  },
+  {
+    "folder": "Setting",
+    "file": "version_panel.png",
+    "x": 276,
+    "y": 126,
+    "width": 1284,
+    "height": 249,
+    "parent": "",
+    "pixels": "148153,171563"
+  },
+  {
+    "folder": "Setting",
+    "file": "icon_levelup.png",
+    "x": 1706,
+    "y": 762,
+    "width": 110,
+    "height": 118,
+    "parent": "panel_background",
+    "pixels": "6455,6525"
+  },
+  {
+    "folder": "Setting",
+    "file": "levelup_text_off.png",
+    "x": 2328,
+    "y": 795,
+    "width": 92,
+    "height": 51,
+    "parent": "levelup_off_fill",
+    "pixels": "2431,2261"
+  },
+  {
+    "folder": "Setting",
+    "file": "close_button.png",
+    "x": 2422,
+    "y": 81,
+    "width": 116,
+    "height": 119,
+    "parent": "panel_background",
+    "pixels": "8496,5308"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_autosave.png",
+    "x": 1874,
+    "y": 644,
+    "width": 309,
+    "height": 63,
+    "parent": "panel_background",
+    "pixels": "11224,8243"
+  },
+  {
+    "folder": "Setting",
+    "file": "autosave_toggle.png",
+    "x": 2228,
+    "y": 628,
+    "width": 222,
+    "height": 96,
+    "parent": "panel_background",
+    "pixels": "9554,11758"
+  },
+  {
+    "folder": "Setting",
+    "file": "icon_autosave.png",
+    "x": 1709,
+    "y": 623,
+    "width": 102,
+    "height": 105,
+    "parent": "panel_background",
+    "pixels": "7633,3077"
+  },
+  {
+    "folder": "Setting",
+    "file": "music_track_visible.png",
+    "x": 2347,
+    "y": 342,
+    "width": 103,
+    "height": 49,
+    "parent": "panel_background",
+    "pixels": "4476,571"
+  },
+  {
+    "folder": "Setting",
+    "file": "text_effect.png",
+    "x": 1876,
+    "y": 456,
+    "width": 222,
+    "height": 62,
+    "parent": "panel_background",
+    "pixels": "8478,5286"
+  },
+  {
+    "folder": "Setting",
+    "file": "title_settings.png",
+    "x": 1765,
+    "y": 55,
+    "width": 306,
+    "height": 80,
+    "parent": "panel_background",
+    "pixels": "14868,9612"
+  }
+]
