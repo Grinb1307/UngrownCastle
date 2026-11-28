@@ -165,6 +165,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9aab7784214a3d429beab769cc1eaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
+  damage: 40
   rotationOffset: 0
   lifeTime: 5
+  explosionRadius: 2
+  explosionDamageMultiplier: 1
+  explosionPrefab: {fileID: 2268032705332488120, guid: 347d82fa79c47874180a43e44f28c659, type: 3}
+  explosionLifetime: 1

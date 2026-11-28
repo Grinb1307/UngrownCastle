@@ -1,0 +1,1 @@
+Extracted from screenshot. PNG alpha masks approximate edges. Panels reconstructed from visible pixels; occluded portions and underlying textures cannot be recovered exactly. Text and icons retain screenshot darkening. Background gameplay excluded. Fifth pedestal obscured by lock; use one of the other four.

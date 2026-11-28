@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UngrownCastle.Enemies;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
@@ -12,10 +13,15 @@ public class ArrowProjectile : MonoBehaviour
     private Rigidbody2D rb;
     private float damage;
     private bool initialized;
+    private bool hasHit;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        // Giảm nguy cơ xuyên qua Enemy khi bay nhanh
+        rb.collisionDetectionMode =
+            CollisionDetectionMode2D.Continuous;
     }
 
     public void Initialize(
@@ -25,23 +31,17 @@ public class ArrowProjectile : MonoBehaviour
     {
         damage = arrowDamage;
 
-        // Vị trí xuất phát
         Vector2 startPosition = transform.position;
-
-        // Khoảng cách đến mục tiêu
         Vector2 distance = targetPosition - startPosition;
 
-        // Thời gian bay dựa trên khoảng cách ngang
         float flightTime = Mathf.Max(
             Mathf.Abs(distance.x) / horizontalSpeed,
             0.15f
         );
 
-        // Gia tốc trọng trường thực tế
         float gravity = Physics2D.gravity.y *
                         rb.gravityScale;
 
-        // Tính vận tốc ban đầu
         float vx = distance.x / flightTime;
 
         float vy = (
@@ -49,7 +49,6 @@ public class ArrowProjectile : MonoBehaviour
             0.5f * gravity * flightTime * flightTime
         ) / flightTime;
 
-        // Xoay góc bổ sung cho Multi Shot
         Vector2 velocity = new Vector2(vx, vy);
 
         velocity = Quaternion.Euler(
@@ -68,27 +67,56 @@ public class ArrowProjectile : MonoBehaviour
         if (!initialized)
             return;
 
-        // Lấy vận tốc thực tế của mũi tên
         Vector2 velocity = rb.linearVelocity;
 
-        // Tính góc bay
+        if (velocity.sqrMagnitude < 0.001f)
+            return;
+
         float angle = Mathf.Atan2(
             velocity.y,
             velocity.x
         ) * Mathf.Rad2Deg;
 
-        // Xoay sprite theo hướng bay
-        transform.rotation = Quaternion.Euler(0,0,angle + 120f);
+        transform.rotation = Quaternion.Euler(
+            0f, 0f, angle + 120f
+        );
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!initialized || hasHit)
+            return;
+
+        // Tìm Enemy kể cả khi Collider nằm ở object con
+        Enemy enemy =
+            collision.GetComponentInParent<Enemy>();
+
+        if (enemy != null)
+        {
+            hasHit = true;
+
+            enemy.TakeDamage(damage);
+
+            Debug.Log(
+                $"Arrow gây {damage} damage cho {enemy.EnemyName}"
+            );
+
+            Destroy(gameObject);
+            return;
+        }
+
+        // Hỗ trợ DummyTarget nếu vẫn còn sử dụng
         DummyTarget dummy =
-            collision.GetComponent<DummyTarget>();
+            collision.GetComponentInParent<DummyTarget>();
 
         if (dummy != null)
         {
+            hasHit = true;
+
             dummy.TakeDamage(damage);
+
+            Debug.Log($"Arrow gây {damage} damage cho Dummy");
+
             Destroy(gameObject);
         }
     }
