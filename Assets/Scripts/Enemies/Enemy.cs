@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace UngrownCastle.Enemies
 {
@@ -31,6 +32,12 @@ namespace UngrownCastle.Enemies
         [Header("Components")]
         [SerializeField] private EnemyWalkAnimation walkAnimation;
         [SerializeField] private SpriteRenderer[] renderersToFlash;
+        [SerializeField] private SortingGroup sortingGroup;
+
+        [Header("Depth Sorting")]
+        [SerializeField] private int sortingOrderBase = 1000;
+        [SerializeField] private int sortingPrecision = 100;
+        [SerializeField] private float sortingYOffset = 0f;
         [Header("Ice Effects")]
         private float slowMultiplier = 1f;
         private Coroutine slowCoroutine;
@@ -82,6 +89,31 @@ namespace UngrownCastle.Enemies
             {
                 renderersToFlash = GetComponentsInChildren<SpriteRenderer>(true);
             }
+
+            if (sortingGroup == null)
+            {
+                sortingGroup = GetComponent<SortingGroup>();
+                if (sortingGroup == null)
+                {
+                    sortingGroup = gameObject.AddComponent<SortingGroup>();
+                }
+            }
+
+            UpdateSortingOrder();
+        }
+
+        private void LateUpdate()
+        {
+            UpdateSortingOrder();
+        }
+
+        private void UpdateSortingOrder()
+        {
+            if (sortingGroup == null)
+                return;
+
+            float footY = transform.position.y + sortingYOffset;
+            sortingGroup.sortingOrder = sortingOrderBase - Mathf.RoundToInt(footY * sortingPrecision);
         }
 
         private void Start()

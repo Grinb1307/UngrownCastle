@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class Druid : SummonHeroes
@@ -19,15 +18,21 @@ public class Druid : SummonHeroes
     {
         base.Summon();
 
+        if (summonedUnit != null)
+        {
+            ent = summonedUnit.GetComponent<EntAI>();
+        }
+
         Debug.Log("Druid summoned Ent!");
+    }
+
+    protected override bool CanUseSkill()
+    {
+        return ent != null && !ent.IsEmpowered;
     }
 
     public override void UseSkill()
     {
-        // Skill: Cường hóa đòn đánh tiếp theo của Ent
-        if (ent != null)
-        {
-            ent.EmpowerNextAttack();
-        }
+        
     }
 }

@@ -97,6 +97,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1686961504525233233}
   - component: {fileID: 5386854144541644891}
+  - component: {fileID: 5386854144541644892}
+  - component: {fileID: 5386854144541644893}
   m_Layer: 0
   m_Name: Ent
   m_TagString: Untagged
@@ -144,15 +146,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 30
   attackRange: 1.5
-  attackCooldown: 1.5
+  attackSpeed: 0.7
+  attackHitBuffer: 0.35
+  attackFallbackDuration: 0.85
   moveSpeed: 2
   detectionRange: 10
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  animator: {fileID: 0}
+  retargetInterval: 0.2
+  retargetSwitchMargin: 0.15
+  animator: {fileID: 5386854144541644892}
   walkParameter: IsMoving
   attackTrigger: Attack
+  sortingGroup: {fileID: 5386854144541644893}
+  sortingOrderBase: 1000
+  sortingPrecision: 100
+  sortingYOffset: -0.75
+  empoweredDamageMultiplier: 2
+--- !u!210 &5386854144541644893
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965387826222862695}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+--- !u!95 &5386854144541644892
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 965387826222862695}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a11e0005000140018001000000000005, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1282128619119805827
 GameObject:
   m_ObjectHideFlags: 0
