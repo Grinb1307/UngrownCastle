@@ -37,8 +37,8 @@ public abstract class SummonHeroes : Heroes
         );
     }
 
-    // Không thực hiện đánh thường
-    protected sealed override void PerformAttack()
+    // Mặc định Summon Heroes không đánh thường (lớp con như Slinger có thể override)
+    protected override void PerformAttack()
     {
     }
 }

@@ -33,8 +33,10 @@ public class IceSocceress : IceHeroes
     private bool isSelectingArea;
     private bool waitingForMouseRelease;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         if (targetingCircleObject != null)
             targetingCircleObject.SetActive(false);
     }

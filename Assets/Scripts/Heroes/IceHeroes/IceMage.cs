@@ -32,8 +32,10 @@ public class IceMage : IceHeroes
     private bool isSelectingArea;
     private bool waitingForMouseRelease;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         // Ẩn vòng tròn khi bắt đầu game
         if (targetingCircleObject != null)
         {

@@ -274,7 +274,7 @@ MonoBehaviour:
   critChance: 0.2
   critMultiplier: 2
   maxMana: 100
-  currentMana: 0
+  currentMana: 100
   manaRegen: 10
   attackRange: 8
   enemyLayer:

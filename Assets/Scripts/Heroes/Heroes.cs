@@ -11,7 +11,7 @@ public abstract class Heroes : MonoBehaviour
 
     [Header("Mana")]
     [SerializeField] protected float maxMana = 100f;
-    [SerializeField] protected float currentMana = 0f;
+    [SerializeField] protected float currentMana = 100f;
     [SerializeField] protected float manaRegen = 10f;
 
     [Header("Target")]
@@ -22,6 +22,11 @@ public abstract class Heroes : MonoBehaviour
 
     private float attackTimer;
     private float targetTimer;
+
+    protected virtual void Awake()
+    {
+        currentMana = maxMana;
+    }
 
     // Kiểm tra Hero đã đầy mana chưa
     public bool IsManaFull()

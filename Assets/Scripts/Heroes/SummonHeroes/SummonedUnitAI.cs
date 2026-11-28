@@ -52,6 +52,11 @@ public abstract class SummonedUnitAI : MonoBehaviour
     public Enemy CurrentTarget => targetEnemy;
     public bool IsAttacking => isAttacking;
 
+    public void SetDamage(float newDamage)
+    {
+        damage = Mathf.Max(0f, newDamage);
+    }
+
     protected virtual void Reset()
     {
         AutoAssignComponents();

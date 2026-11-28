@@ -77,8 +77,6 @@ MonoBehaviour:
   sortingOrderBase: 1000
   sortingPrecision: 100
   sortingYOffset: -0.75
-  heavySlamMultiplier: 2
-  heavySlamRadius: 2.2
 --- !u!210 &210000000000000001
 SortingGroup:
   m_ObjectHideFlags: 0

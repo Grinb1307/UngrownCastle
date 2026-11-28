@@ -28,15 +28,10 @@ public class GolemMaster : SummonHeroes
 
     protected override bool CanUseSkill()
     {
-        return golem != null && !golem.IsHeavySlamReady;
+        return false;
     }
 
     public override void UseSkill()
     {
-        if (golem == null)
-            return;
-
-        golem.ActivateHeavySlam();
-        Debug.Log("Golem Master activated Golem Heavy Slam!");
     }
 }
