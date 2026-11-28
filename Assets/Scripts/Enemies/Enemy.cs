@@ -27,6 +27,7 @@ namespace UngrownCastle.Enemies
         [Header("Target & Movement")]
         [SerializeField] public float castleStopX = -3.77f; // Position where castle stands
         [SerializeField] public Transform targetCastle;
+        [SerializeField] private bool spriteFacesRight = false;
 
         [Header("Components")]
         [SerializeField] private EnemyWalkAnimation walkAnimation;
@@ -51,6 +52,8 @@ namespace UngrownCastle.Enemies
         private float nextAttackTime;
         private Collider2D enemyCollider;
         private Coroutine flashCoroutine;
+        private bool isTouchingCastle = false;
+        private float baseScaleX = 1f;
 
         public string EnemyName => enemyName;
         public float CurrentHp => currentHp;
@@ -66,6 +69,8 @@ namespace UngrownCastle.Enemies
         {
             currentHp = maxHp;
             enemyCollider = GetComponent<Collider2D>();
+            baseScaleX = Mathf.Abs(transform.localScale.x);
+            if (baseScaleX < 0.0001f) baseScaleX = 1f;
 
             // Auto-find EnemyWalkAnimation anywhere on this prefab
             if (walkAnimation == null)
@@ -82,26 +87,57 @@ namespace UngrownCastle.Enemies
             {
                 renderersToFlash = GetComponentsInChildren<SpriteRenderer>(true);
             }
+
+            // Ensure Enemy layer is set so Heroes (OverlapCircleAll with enemyLayer) detect this Enemy
+            int enemyLayerIndex = LayerMask.NameToLayer("Enemy");
+            if (enemyLayerIndex != -1 && gameObject.layer == 0)
+            {
+                gameObject.layer = enemyLayerIndex;
+            }
+
+            FindCastle();
+        }
+
+        private void FindCastle()
+        {
+            if (targetCastle != null) return;
+
+            GameObject castleObj = GameObject.Find("Castle");
+            if (castleObj != null)
+            {
+                targetCastle = castleObj.transform;
+            }
+            else
+            {
+                Debug.LogWarning($"[{enemyName}] No GameObject named 'Castle' found. Using castleStopX={castleStopX} as target.");
+            }
+        }
+
+        private void UpdateFacingDirection(float moveDir)
+        {
+            bool shouldFlipX = (moveDir < 0f && spriteFacesRight) || (moveDir > 0f && !spriteFacesRight);
+            Vector3 s = transform.localScale;
+            s.x = shouldFlipX ? -baseScaleX : baseScaleX;
+            transform.localScale = s;
         }
 
         private void Start()
         {
             if (isTrainingDummy)
                 return;
-            // If target castle is not explicitly assigned, find by tag or default to X = 0
-            if (targetCastle == null)
+
+            FindCastle();
+
+            float targetX = targetCastle != null ? targetCastle.position.x : castleStopX;
+            float dx = targetX - transform.position.x;
+            UpdateFacingDirection(dx >= 0f ? 1f : -1f);
+
+            // Start in Moving state with walk animation active
+            state = EnemyState.Moving;
+            if (walkAnimation != null)
             {
-                GameObject castleObj = GameObject.FindGameObjectWithTag("Castle");
-                if (castleObj != null)
-                {
-                    targetCastle = castleObj.transform;
-                }
-                else
-                {
-                    Debug.LogWarning($"[{enemyName}] No GameObject with tag 'Castle' found. Using castleStopX={castleStopX} as target.");
-                }
+                walkAnimation.SetAttacking(false);
             }
-            // NOTE: Facing direction is handled by WaveSpawner on Instantiate
         }
 
         private void Update()
@@ -110,9 +146,11 @@ namespace UngrownCastle.Enemies
                 return;
 
             float targetX = targetCastle != null ? targetCastle.position.x : castleStopX;
-            float distanceToCastle = transform.position.x - targetX;
+            float dx = targetX - transform.position.x;
+            float distanceToCastle = Mathf.Abs(dx);
+            UpdateFacingDirection(dx >= 0f ? 1f : -1f);
 
-            if (distanceToCastle <= attackRange)
+            if (distanceToCastle <= attackRange || isTouchingCastle)
             {
                 // Reached Castle - switch to attack
                 if (state != EnemyState.Attacking)
@@ -132,7 +170,7 @@ namespace UngrownCastle.Enemies
             }
             else
             {
-                // Move towards castle (leftwards)
+                // Move towards castle
                 if (state != EnemyState.Moving)
                 {
                     state = EnemyState.Moving;
@@ -143,8 +181,9 @@ namespace UngrownCastle.Enemies
                 }
 
                 float currentSpeed = moveSpeed * slowMultiplier;
+                float moveDir = dx >= 0f ? 1f : -1f;
 
-                transform.position += Vector3.left *
+                transform.position += new Vector3(moveDir, 0f, 0f) *
                     (currentSpeed * Time.deltaTime);
             }
         }
@@ -240,7 +279,7 @@ namespace UngrownCastle.Enemies
             Destroy(gameObject);
         }
 
-        public void InitializeStats(string name, float hp, float speed, float damage, float range, int gold, int exp, bool flying = false)
+        public void InitializeStats(string name, float hp, float speed, float damage, float range, int gold, int exp, bool flying = false, bool facesRight = false)
         {
             enemyName = name;
             maxHp = hp;
@@ -251,6 +290,7 @@ namespace UngrownCastle.Enemies
             goldReward = gold;
             expReward = exp;
             isFlying = flying;
+            spriteFacesRight = facesRight;
         }
         // Áp dụng hiệu ứng làm chậm
         // Chỉ làm chậm, không đóng băng hoàn toàn
@@ -334,6 +374,38 @@ namespace UngrownCastle.Enemies
                     currentColor.a = sr.color.a;
                     sr.color = currentColor;
                 }
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other != null && other.gameObject.name == "Castle")
+            {
+                isTouchingCastle = true;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other != null && other.gameObject.name == "Castle")
+            {
+                isTouchingCastle = false;
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision != null && collision.gameObject != null && collision.gameObject.name == "Castle")
+            {
+                isTouchingCastle = true;
+            }
+        }
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision != null && collision.gameObject != null && collision.gameObject.name == "Castle")
+            {
+                isTouchingCastle = false;
             }
         }
     }

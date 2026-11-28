@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UngrownCastle.Enemies;
 
 public class SuccubusUltimate : MonoBehaviour
 {
@@ -9,16 +11,26 @@ public class SuccubusUltimate : MonoBehaviour
     public Transform bodyTransform;      // Kéo object 'body' vào đây (để lấy chuẩn vị trí)
 
     [Header("Cài đặt thời gian và hiệu ứng")]
-    public float ultimateCooldown = 6f;  // Cứ 6 giây kích hoạt 1 lần
+    public float ultimateCooldown = 6f;  // Thời gian hồi chiêu (6 giây)
     public float ultimateDuration = 0.3f;// Thời gian Ultimate mọc dài từ dưới lên
     public float heartDuration = 0.25f;  // Thời gian Heart bung to ra
     public float holdDuration = 0.5f;    // Thời gian giữ cả 2 hiển thị trước khi tắt hoàn toàn
     public float dropOffset = 1.0f;      // Khoảng cách thụt xuống bên dưới body để mọc lên
 
+    [Header("Target & Damage")]
+    [SerializeField] protected float attackRange = 8f;
+    [SerializeField] protected LayerMask enemyLayer;
+    [SerializeField] private float skillDamage = 30f;
+    [SerializeField] private float skillRadius = 3f;
+
+    protected Transform target;
+    private float targetTimer;
+
     private Vector3 ultimateTargetPos;
     private Vector3 ultimateTargetScale;
     private Vector3 heartTargetScale;
-    private float timer = 0f;
+    private bool isReadyToUse = true;
+    private bool isExecuting = false;
 
     void Awake()
     {
@@ -39,20 +51,113 @@ public class SuccubusUltimate : MonoBehaviour
             heartTargetScale = heartTransform.localScale;
             heartTransform.gameObject.SetActive(false);
         }
+
+        if (enemyLayer.value == 0)
+        {
+            int mask = LayerMask.GetMask("Enemy");
+            enemyLayer = mask != 0 ? (LayerMask)mask : (LayerMask)(~0);
+        }
+
+        EnsureBoxCollider2D();
+    }
+
+    private void EnsureBoxCollider2D()
+    {
+        if (GetComponent<Collider2D>() != null) return;
+        BoxCollider2D col = gameObject.AddComponent<BoxCollider2D>();
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(false);
+        if (renderers != null && renderers.Length > 0)
+        {
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
+            {
+                if (renderers[i] != null) bounds.Encapsulate(renderers[i].bounds);
+            }
+            col.offset = transform.InverseTransformPoint(bounds.center);
+            Vector3 lossy = transform.lossyScale;
+            col.size = new Vector2(
+                Mathf.Abs(lossy.x) > 0.0001f ? bounds.size.x / Mathf.Abs(lossy.x) : bounds.size.x,
+                Mathf.Abs(lossy.y) > 0.0001f ? bounds.size.y / Mathf.Abs(lossy.y) : bounds.size.y
+            );
+        }
+        else
+        {
+            col.size = new Vector2(1.5f, 1.5f);
+        }
     }
 
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= ultimateCooldown)
+        FindTarget();
+    }
+
+    void OnMouseDown()
+    {
+        if (!isReadyToUse || isExecuting) return;
+
+        TriggerUltimateSequence();
+    }
+
+    protected void FindTarget()
+    {
+        if (target != null)
         {
-            timer = 0f;
-            TriggerUltimateSequence();
+            Enemy currentEnemy = target.GetComponentInParent<Enemy>();
+            if (currentEnemy == null || currentEnemy.IsDead ||
+                Vector2.Distance(transform.position, target.position) > attackRange)
+            {
+                target = null;
+            }
+        }
+
+        targetTimer += Time.deltaTime;
+        if (targetTimer < 0.25f) return;
+        targetTimer = 0f;
+
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(
+            transform.position,
+            attackRange,
+            enemyLayer
+        );
+
+        Transform nearest = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (Collider2D col in enemies)
+        {
+            if (col == null) continue;
+            Enemy enemyComp = col.GetComponentInParent<Enemy>();
+            if (enemyComp == null || enemyComp.IsDead) continue;
+
+            float distance = Vector2.Distance(transform.position, enemyComp.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearest = enemyComp.transform;
+            }
+        }
+
+        target = nearest;
+    }
+
+    private void DealAreaDamage(Vector2 center, float radius, float dmg)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius, enemyLayer);
+        HashSet<Enemy> affectedEnemies = new HashSet<Enemy>();
+        foreach (Collider2D hit in hits)
+        {
+            if (hit == null) continue;
+            Enemy enemy = hit.GetComponentInParent<Enemy>();
+            if (enemy == null || enemy.IsDead || affectedEnemies.Contains(enemy)) continue;
+            affectedEnemies.Add(enemy);
+            enemy.TakeDamage(dmg);
         }
     }
 
     void TriggerUltimateSequence()
     {
+        isReadyToUse = false;
+        isExecuting = true;
         StopAllCoroutines();
         StartCoroutine(RunUltimateAnimation());
     }
@@ -93,6 +198,12 @@ public class SuccubusUltimate : MonoBehaviour
             ultimateTransform.localScale = ultimateTargetScale;
         }
 
+        // Gây sát thương vùng lên Enemy gần nhất (hoặc tại vị trí Ultimate)
+        Vector2 damageCenter = target != null
+            ? (Vector2)target.position
+            : (ultimateTransform != null ? (Vector2)ultimateTransform.position : (Vector2)transform.position);
+        DealAreaDamage(damageCenter, skillRadius, skillDamage);
+
         // ==========================================
         // BƯỚC 2: HEART BUNG TO DẦN TẠI VỊ TRÍ ĐÓ
         // ==========================================
@@ -101,7 +212,10 @@ public class SuccubusUltimate : MonoBehaviour
             heartTransform.gameObject.SetActive(true);
 
             // Đặt Heart nằm đúng vị trí của Ultimate và scale ban đầu bằng 0 (biến mất)
-            heartTransform.position = ultimateTransform.position;
+            if (ultimateTransform != null)
+            {
+                heartTransform.position = ultimateTransform.position;
+            }
             heartTransform.localScale = Vector3.zero;
 
             float elapsed = 0f;
@@ -126,5 +240,17 @@ public class SuccubusUltimate : MonoBehaviour
 
         if (ultimateTransform != null) ultimateTransform.gameObject.SetActive(false);
         if (heartTransform != null) heartTransform.gameObject.SetActive(false);
+
+        isExecuting = false;
+
+        // Hồi chiêu
+        float timer = 0f;
+        while (timer < ultimateCooldown)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        isReadyToUse = true;
     }
 }

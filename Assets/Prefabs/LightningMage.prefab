@@ -716,3 +716,16 @@ MonoBehaviour:
   StickEndZ: -100
   StickDuration: 0.15
   recoverDelay: 0.1
+  attackRange: 8
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  attackInterval: 1.5
+  attackDamage: 15
+  skillDamage: 40
+  skillRadius: 3
+  cooldownTime: 6
+  ultimateSkill: {fileID: 0}
+  lightningBoltPrefab: {fileID: 100001, guid: a7b9c4d2e8f14a56b3c2d1e0f9a8b7c6, type: 3}
+  targetingCirclePrefab: {fileID: 100001, guid: b8c9d0e1f2a34b56c7d8e9f0a1b2c3d4, type: 3}
+  targetingCircleObject: {fileID: 0}

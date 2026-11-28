@@ -8,8 +8,8 @@ namespace UngrownCastle.Editor
     public static class EnemyPrefabGenerator
     {
         private const string PrefabOutputDir = "Assets/Prefabs/Enemies";
-        private const string SpriteBaseDir = "Assets/Sprites/Enemies";
-        private const string CommonDir = "Assets/Sprites/Enemies/Common";
+        private const string SpriteBaseDir = "Assets/GrowCastleSprites/Enemies";
+        private const string CommonDir = "Assets/GrowCastleSprites/Enemies/Common";
 
         [MenuItem("Tools/UngrownCastle/Generate All Enemy Prefabs (Full Limbs)")]
 
@@ -184,7 +184,7 @@ namespace UngrownCastle.Editor
             anim.SetupBiped(visual.transform, head.transform, leftLeg.transform, rightLeg.transform, leftArm.transform, rightArm.transform);
 
             Enemy enemy = root.AddComponent<Enemy>();
-            enemy.InitializeStats("Kobold", hp: 15, speed: 1.2f, damage: 7, range: 0.5f, gold: 12, exp: 14);
+            enemy.InitializeStats("Kobold", hp: 15, speed: 1.2f, damage: 7, range: 0.5f, gold: 12, exp: 14, facesRight: true);
 
             SavePrefab(root, "Kobold");
         }
@@ -290,7 +290,7 @@ namespace UngrownCastle.Editor
             anim.SetupBiped(visual.transform, head.transform, leftLeg.transform, rightLeg.transform, leftArm.transform, rightArm.transform);
 
             Enemy enemy = root.AddComponent<Enemy>();
-            enemy.InitializeStats("Troll", hp: 20, speed: 1.5f, damage: 9, range: 0.5f, gold: 10, exp: 5);
+            enemy.InitializeStats("Troll", hp: 20, speed: 1.5f, damage: 9, range: 0.5f, gold: 10, exp: 5, facesRight: true);
 
             SavePrefab(root, "Troll");
         }
@@ -353,7 +353,7 @@ namespace UngrownCastle.Editor
             anim.SetupBiped(visual.transform, head.transform, backLeg.transform, frontLeg.transform, backArm.transform, frontArm.transform, frontArm.transform, tail.transform);
 
             Enemy enemy = root.AddComponent<Enemy>();
-            enemy.InitializeStats("Tauren", hp: 300, speed: 1.3f, damage: 12, range: 0.75f, gold: 100, exp: 50);
+            enemy.InitializeStats("Tauren", hp: 300, speed: 1.3f, damage: 12, range: 0.75f, gold: 100, exp: 50, facesRight: true);
 
             SavePrefab(root, "Tauren");
         }

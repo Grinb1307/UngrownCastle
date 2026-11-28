@@ -190,10 +190,6 @@ namespace UngrownCastle.Wave
 
             GameObject enemy = Instantiate(prefab, pos, Quaternion.identity);
 
-            // Flip to face LEFT (toward castle)
-            Vector3 scale = enemy.transform.localScale;
-            enemy.transform.localScale = new Vector3(-Mathf.Abs(scale.x), scale.y, scale.z);
-
             activeEnemies.Add(enemy);
             Debug.Log($"[WaveSpawner] Spawned {prefab.name} at {pos}");
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UngrownCastle.Enemies;
 
 public class Succubus : MonoBehaviour
 {
@@ -12,6 +13,16 @@ public class Succubus : MonoBehaviour
     public float slashDuration = 0.18f;    // Thời gian thực hiện 1 nét cào
     public float slashDistance = 0.6f;     // Quãng đường trượt từ trên-trái xuống dưới-phải
     public float slashAngle = 70f;         // Góc nghiêng chéo bên trái 70 độ
+
+    [Header("Target")]
+    [SerializeField] protected float attackRange = 8f;
+    [SerializeField] protected LayerMask enemyLayer;
+
+    [Header("Combat")]
+    [SerializeField] private float attackDamage = 12f;
+
+    protected Transform target;
+    private float targetTimer;
 
     private Vector3 baseScale;
     private Vector3 startWorldPos;
@@ -31,15 +42,52 @@ public class Succubus : MonoBehaviour
             baseScale = clawTransform.localScale;
             clawTransform.gameObject.SetActive(false);
         }
+
+        if (enemyLayer.value == 0)
+        {
+            int mask = LayerMask.GetMask("Enemy");
+            enemyLayer = mask != 0 ? (LayerMask)mask : (LayerMask)(~0);
+        }
+
+        EnsureBoxCollider2D();
+    }
+
+    private void EnsureBoxCollider2D()
+    {
+        if (GetComponent<Collider2D>() != null) return;
+        BoxCollider2D col = gameObject.AddComponent<BoxCollider2D>();
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(false);
+        if (renderers != null && renderers.Length > 0)
+        {
+            Bounds bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
+            {
+                if (renderers[i] != null) bounds.Encapsulate(renderers[i].bounds);
+            }
+            col.offset = transform.InverseTransformPoint(bounds.center);
+            Vector3 lossy = transform.lossyScale;
+            col.size = new Vector2(
+                Mathf.Abs(lossy.x) > 0.0001f ? bounds.size.x / Mathf.Abs(lossy.x) : bounds.size.x,
+                Mathf.Abs(lossy.y) > 0.0001f ? bounds.size.y / Mathf.Abs(lossy.y) : bounds.size.y
+            );
+        }
+        else
+        {
+            col.size = new Vector2(1.5f, 1.5f);
+        }
     }
 
     void Update()
     {
+        FindTarget();
+
         if (clawTransform == null || bodyTransform == null) return;
 
-        // 1. Đếm nhịp tự động đánh thường
+        // 1. Đếm nhịp tự động đánh thường khi có Enemy trong tầm
         if (!isSlashing)
         {
+            if (target == null) return;
+
             attackTimer += Time.deltaTime;
             if (attackTimer >= attackInterval)
             {
@@ -69,20 +117,62 @@ public class Succubus : MonoBehaviour
         }
     }
 
+    protected void FindTarget()
+    {
+        // Giữ nguyên mục tiêu hiện tại cho đến khi Enemy chết hoặc ra khỏi tầm đánh
+        if (target != null)
+        {
+            Enemy currentEnemy = target.GetComponentInParent<Enemy>();
+            if (currentEnemy != null && !currentEnemy.IsDead &&
+                Vector2.Distance(transform.position, target.position) <= attackRange)
+            {
+                return;
+            }
+            target = null;
+            targetTimer = 0.25f; // Tìm ngay Enemy gần nhất tiếp theo
+        }
+
+        targetTimer += Time.deltaTime;
+        if (targetTimer < 0.25f) return;
+        targetTimer = 0f;
+
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(
+            transform.position,
+            attackRange,
+            enemyLayer
+        );
+
+        Transform nearest = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (Collider2D col in enemies)
+        {
+            if (col == null) continue;
+            Enemy enemyComp = col.GetComponentInParent<Enemy>();
+            if (enemyComp == null || enemyComp.IsDead) continue;
+
+            float distance = Vector2.Distance(transform.position, enemyComp.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearest = enemyComp.transform;
+            }
+        }
+
+        target = nearest;
+    }
+
     void PerformClawAttack()
     {
         // Bật vết cào và xoay góc chéo bên trái 70 độ
         clawTransform.gameObject.SetActive(true);
         clawTransform.localRotation = Quaternion.Euler(0f, 0f, slashAngle);
 
-        // Lấy tâm của 'body' làm điểm giữa của vết cào
-        Vector3 centerPos = bodyTransform.position;
+        // Lấy vị trí của Enemy gần nhất làm điểm giữa của vết cào (hoặc fallback về body)
+        Vector3 centerPos = target != null ? target.position : bodyTransform.position;
 
         // Tính hướng trượt theo góc xoay hiện tại của vết cào (từ trên-trái xuống dưới-phải)
         Vector3 slashDirection = -clawTransform.up;
-
-        // Nếu sprite của bạn nằm ngang thay vì thẳng đứng, hãy đổi dòng trên thành:
-        // Vector3 slashDirection = clawTransform.right;
 
         startWorldPos = centerPos - slashDirection * (slashDistance * 0.5f);
         endWorldPos = centerPos + slashDirection * (slashDistance * 0.5f);
@@ -90,6 +180,16 @@ public class Succubus : MonoBehaviour
         // Đặt trạng thái khởi đầu
         clawTransform.position = startWorldPos;
         clawTransform.localScale = baseScale;
+
+        // Gây sát thương lên Enemy mục tiêu
+        if (target != null)
+        {
+            Enemy enemy = target.GetComponentInParent<Enemy>();
+            if (enemy != null && !enemy.IsDead)
+            {
+                enemy.TakeDamage(attackDamage);
+            }
+        }
 
         animTimer = 0f;
         isSlashing = true;
